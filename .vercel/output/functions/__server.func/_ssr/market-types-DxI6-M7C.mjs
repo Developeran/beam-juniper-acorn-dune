@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/market-types-D92BrRyS.js
+//#region node_modules/.nitro/vite/services/ssr/assets/market-types-DxI6-M7C.js
 var RANGE_IDS = [
 	"1d",
 	"5d",
@@ -68,18 +68,28 @@ var RANGES = [
 	}
 ];
 var DEFAULT_SYMBOLS = [
-	"ABVX.PA",
+	"GS",
+	"TSM",
+	"ASML",
+	"LRCX",
+	"DRAM",
+	"GOOGL",
+	"ACWI",
+	"GE",
+	"RY",
+	"KKR",
+	"FWONK",
+	"PRLB",
+	"XMTR",
+	"BAC",
+	"ARM",
+	"VIRT",
 	"AAPL",
 	"NVDA",
 	"MSFT",
-	"GOOGL",
 	"TSLA",
-	"AMZN",
-	"MC.PA",
-	"ASML.AS",
 	"BTC-USD"
 ];
-var DEFAULT_SELECTED = "ABVX.PA";
 var EXCHANGE_LABEL = {
 	PAR: "EPA",
 	NMS: "NASDAQ",
@@ -109,4 +119,4 @@ function rangeById(id) {
 	return RANGES.find((r) => r.id === id) ?? RANGES[6];
 }
 //#endregion
-export { displayTicker as a, RANGE_IDS as i, DEFAULT_SYMBOLS as n, exchangeLabel as o, RANGES as r, rangeById as s, DEFAULT_SELECTED as t };
+export { exchangeLabel as a, displayTicker as i, RANGES as n, rangeById as o, RANGE_IDS as r, DEFAULT_SYMBOLS as t };

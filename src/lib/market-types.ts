@@ -31,19 +31,30 @@ export const RANGES: RangeSpec[] = [
 ];
 
 export const DEFAULT_SYMBOLS = [
-  "ABVX.PA",
+  "GS",
+  "TSM",
+  "ASML",
+  "LRCX",
+  "DRAM",
+  "GOOGL",
+  "ACWI",
+  "GE",
+  "RY",
+  "KKR",
+  "FWONK",
+  "PRLB",
+  "XMTR",
+  "BAC",
+  "ARM",
+  "VIRT",
   "AAPL",
   "NVDA",
   "MSFT",
-  "GOOGL",
   "TSLA",
-  "AMZN",
-  "MC.PA",
-  "ASML.AS",
   "BTC-USD",
 ] as const;
 
-export const DEFAULT_SELECTED = "ABVX.PA";
+export const DEFAULT_SELECTED = "GS";
 
 export const EXCHANGE_LABEL: Record<string, string> = {
   PAR: "EPA",

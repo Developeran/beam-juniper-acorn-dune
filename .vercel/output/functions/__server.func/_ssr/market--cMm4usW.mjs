@@ -1,15 +1,8 @@
-import { n as TSS_SERVER_FUNCTION, t as createServerFn } from "./ssr.mjs";
-import { i as RANGE_IDS, o as exchangeLabel, s as rangeById } from "./market-types-D92BrRyS.mjs";
-import { a as object, i as number, n as array, o as string, t as _enum } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/market-Uok3rqac.js
-var createServerRpc = (serverFnMeta, splitImportFn) => {
-	const url = "/_serverFn/" + serverFnMeta.id;
-	return Object.assign(splitImportFn, {
-		url,
-		serverFnMeta,
-		[TSS_SERVER_FUNCTION]: true
-	});
-};
+import { t as createServerFn } from "./ssr.mjs";
+import { t as createServerRpc } from "./createServerRpc-A6pJPYTF.mjs";
+import { a as number, c as string, n as array, o as object, r as boolean, s as record, t as _enum } from "../_libs/zod.mjs";
+import { a as exchangeLabel, o as rangeById, r as RANGE_IDS } from "./market-types-DxI6-M7C.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/market--cMm4usW.js
 var YAHOO_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
 var SYMBOL_RE = /^[A-Za-z0-9.^_=/-]{1,24}$/;
 function assertSymbol(raw) {
@@ -315,5 +308,137 @@ var explainMove = createServerFn({ method: "POST" }).validator(object({
 		text
 	};
 });
+var getPortfolioHistoricalChart_createServerFn_handler = createServerRpc({
+	id: "127a987169ec391ad6880045217735076b2629930e2591dfee634e748e576177",
+	name: "getPortfolioHistoricalChart",
+	filename: "src/lib/market.ts"
+}, (opts) => getPortfolioHistoricalChart.__executeServer(opts));
+var getPortfolioHistoricalChart = createServerFn({ method: "POST" }).validator(object({
+	symbols: array(string()),
+	sharesMap: record(string(), number()),
+	costPricesMap: record(string(), number()),
+	range: _enum(RANGE_IDS),
+	includeBenchmark: boolean().optional()
+})).handler(getPortfolioHistoricalChart_createServerFn_handler, async ({ data }) => {
+	const range = data.range;
+	const spec = rangeById(range);
+	const symbols = data.symbols;
+	const sharesMap = data.sharesMap;
+	const costPricesMap = data.costPricesMap;
+	const cacheKey = `pfchart:${symbols.slice().sort().join(",")}:${range}:${data.includeBenchmark ? "1" : "0"}`;
+	const cached = fromCache(cacheKey, 2e4);
+	if (cached) return cached;
+	const fetches = symbols.map(async (sym) => {
+		const symCacheKey = `symchart:${sym}:${spec.yahoo}:${spec.interval}`;
+		const cachedSym = fromCache(symCacheKey, 45e3);
+		if (cachedSym) return {
+			symbol: sym,
+			...cachedSym
+		};
+		try {
+			const parsed = parsePoints(await fetchChartRaw(sym, spec.yahoo, spec.interval));
+			const price = num(parsed.meta.regularMarketPrice) || (parsed.points[parsed.points.length - 1]?.c ?? 0);
+			const entry = {
+				points: parsed.points,
+				price
+			};
+			toCache(symCacheKey, entry);
+			return {
+				symbol: sym,
+				...entry
+			};
+		} catch {
+			return {
+				symbol: sym,
+				points: [],
+				price: costPricesMap[sym] || 100
+			};
+		}
+	});
+	let benchmarkPoints = [];
+	if (data.includeBenchmark) {
+		const benchCacheKey = `symchart:ACWI:${spec.yahoo}:${spec.interval}`;
+		const cachedBench = fromCache(benchCacheKey, 45e3);
+		if (cachedBench) benchmarkPoints = cachedBench;
+		else try {
+			benchmarkPoints = parsePoints(await fetchChartRaw("ACWI", spec.yahoo, spec.interval)).points;
+			toCache(benchCacheKey, benchmarkPoints);
+		} catch {}
+	}
+	const results = await Promise.all(fetches);
+	const allTimestampsSet = /* @__PURE__ */ new Set();
+	for (const r of results) for (const p of r.points) allTimestampsSet.add(p.t);
+	if (data.includeBenchmark && benchmarkPoints.length > 0) for (const p of benchmarkPoints) allTimestampsSet.add(p.t);
+	const allTimestamps = Array.from(allTimestampsSet).sort((a, b) => a - b);
+	if (allTimestamps.length === 0) return {
+		points: [],
+		startValue: 0,
+		currentValue: 0,
+		change: 0,
+		changePct: 0,
+		range
+	};
+	const symbolPointMaps = /* @__PURE__ */ new Map();
+	results.forEach((r) => {
+		symbolPointMaps.set(r.symbol, r.points);
+	});
+	const stockPointers = /* @__PURE__ */ new Map();
+	const stockPrices = /* @__PURE__ */ new Map();
+	for (const sym of symbols) {
+		stockPointers.set(sym, 0);
+		const firstValidPrice = (symbolPointMaps.get(sym) || [])[0]?.c ?? costPricesMap[sym] ?? 100;
+		stockPrices.set(sym, firstValidPrice);
+	}
+	let benchPtr = 0;
+	let benchPrice = benchmarkPoints[0]?.c;
+	const benchStartPrice = benchPrice;
+	const rawPortfolioPoints = [];
+	for (const t of allTimestamps) {
+		let totalPortfolioVal = 0;
+		for (const sym of symbols) {
+			const pts = symbolPointMaps.get(sym) || [];
+			let ptr = stockPointers.get(sym) ?? 0;
+			while (ptr + 1 < pts.length && pts[ptr + 1].t <= t) {
+				ptr++;
+				stockPrices.set(sym, pts[ptr].c);
+			}
+			stockPointers.set(sym, ptr);
+			const price = stockPrices.get(sym) ?? costPricesMap[sym] ?? 100;
+			const shares = sharesMap[sym] || 1;
+			totalPortfolioVal += price * shares;
+		}
+		let benchRatio = void 0;
+		if (data.includeBenchmark && benchmarkPoints.length > 0 && benchStartPrice) {
+			while (benchPtr + 1 < benchmarkPoints.length && benchmarkPoints[benchPtr + 1].t <= t) {
+				benchPtr++;
+				benchPrice = benchmarkPoints[benchPtr].c;
+			}
+			if (benchPrice) benchRatio = benchPrice / benchStartPrice;
+		}
+		rawPortfolioPoints.push({
+			t,
+			value: totalPortfolioVal,
+			benchmarkValue: benchRatio
+		});
+	}
+	const startVal = rawPortfolioPoints[0]?.value || 1;
+	const currentVal = rawPortfolioPoints[rawPortfolioPoints.length - 1]?.value || 1;
+	const change = currentVal - startVal;
+	const changePct = startVal > 0 ? change / startVal * 100 : 0;
+	if (benchmarkPoints.length > 0) rawPortfolioPoints.forEach((p) => {
+		if (p.benchmarkValue !== void 0) p.benchmarkValue = startVal * p.benchmarkValue;
+	});
+	const lastBench = rawPortfolioPoints[rawPortfolioPoints.length - 1]?.benchmarkValue;
+	const benchmarkChangePct = lastBench && startVal > 0 ? (lastBench - startVal) / startVal * 100 : void 0;
+	return toCache(cacheKey, {
+		points: rawPortfolioPoints.length > 180 ? downsample(rawPortfolioPoints, 180) : rawPortfolioPoints,
+		startValue: startVal,
+		currentValue: currentVal,
+		change,
+		changePct,
+		benchmarkChangePct,
+		range
+	});
+});
 //#endregion
-export { explainMove_createServerFn_handler, getChart_createServerFn_handler, getQuotes_createServerFn_handler, searchSymbols_createServerFn_handler };
+export { explainMove_createServerFn_handler, getChart_createServerFn_handler, getPortfolioHistoricalChart_createServerFn_handler, getQuotes_createServerFn_handler, searchSymbols_createServerFn_handler };

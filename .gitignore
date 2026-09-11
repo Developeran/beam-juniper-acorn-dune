@@ -3,3 +3,6 @@ node_modules/
 .github_repo
 .env
 .env.*
+client_secret.json
+client_secret_*.json
+

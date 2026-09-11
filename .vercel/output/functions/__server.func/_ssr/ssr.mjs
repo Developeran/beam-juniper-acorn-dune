@@ -1,9 +1,8 @@
 import { n as __exportAll } from "../_runtime.mjs";
-import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
+import { c as require_react, s as require_jsx_runtime } from "../_libs/@radix-ui/react-collection+[...].mjs";
 import { C as getStylesheetHref, D as executeRewriteInput, E as _getRenderedMatches, F as rootRouteId, I as isNotFound, M as isResolvedRedirect, N as parseRedirect, O as invariant, S as getScriptPreloadAttrs, T as resolveManifestCssLink, a as isSsrResponse, c as stripSsrResponseBody, d as RouterProvider, i as disposeSsrResponseDetached, j as isRedirect, n as bindSsrResponseToRequest, o as normalizeSsrResponse, r as defineHandlerCallback, s as replaceSsrResponse, t as renderRouterToStream, w as resolveManifestAssetLink } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as createMemoryHistory } from "../_libs/tanstack__history.mjs";
 import { a as getOrigin, c as createSerializationAdapter, d as toCrossJSONAsync, f as toCrossJSONStream, i as getNormalizedURL, l as makeSerovalPlugin, n as mergeHeaders, o as defaultSerovalPlugins, r as attachRouterServerSsrUtils, s as createRawStreamRPCPlugin, t as waitForRequest, u as fromJSON } from "../_libs/@tanstack/router-core+[...].mjs";
-import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
 import { n as toResponse, t as H3Event } from "../_libs/h3-v2+rou3.mjs";
 import { AsyncLocalStorage } from "node:async_hooks";
 //#region node_modules/.nitro/vite/services/ssr/index.js
@@ -89,7 +88,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-DQdn3EwQ.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-CDNPjB_M.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -109,21 +108,29 @@ async function getStartManifest(matchedRoutes) {
 	};
 }
 var manifest = {
+	"127a987169ec391ad6880045217735076b2629930e2591dfee634e748e576177": {
+		functionName: "getPortfolioHistoricalChart_createServerFn_handler",
+		importer: () => import("./market--cMm4usW.mjs")
+	},
 	"2bf7888de22fd263c77d5c3316d45b5cad8bcc3eff7578ee88d98d3bb30b31d4": {
 		functionName: "explainMove_createServerFn_handler",
-		importer: () => import("./market-Uok3rqac.mjs")
+		importer: () => import("./market--cMm4usW.mjs")
 	},
 	"6526d28b5af5f698b2c7b1aadfdfd5ec325fff6f69da3f7dc653990e6804737e": {
 		functionName: "searchSymbols_createServerFn_handler",
-		importer: () => import("./market-Uok3rqac.mjs")
+		importer: () => import("./market--cMm4usW.mjs")
+	},
+	"c3bf7882619a523e48b9c5d821a31eccf348c893591eb3fd9843ff2c883403bd": {
+		functionName: "fetchSheetData_createServerFn_handler",
+		importer: () => import("./google-sheets-DHNCij4N.mjs")
 	},
 	"e7ba96f3582fa61a1e6a4c12c9949c309908c4cad462d84783ed245a07a0ceac": {
 		functionName: "getChart_createServerFn_handler",
-		importer: () => import("./market-Uok3rqac.mjs")
+		importer: () => import("./market--cMm4usW.mjs")
 	},
 	"fbac33f52a0daa5a2a65572f2d89ee0bcd8d773e8633a0c2922c53cb0bdbdd74": {
 		functionName: "getQuotes_createServerFn_handler",
-		importer: () => import("./market-Uok3rqac.mjs")
+		importer: () => import("./market--cMm4usW.mjs")
 	}
 };
 async function getServerFnById(id, access) {
@@ -1393,7 +1400,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router--Lf_bbNk.mjs").then((n) => n.t),
+		import("./router-CGaGyvmQ.mjs").then((n) => n.t),
 		import("./start-5Z2QO8AU.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);

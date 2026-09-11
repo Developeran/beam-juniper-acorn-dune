@@ -415,3 +415,201 @@ export const explainMove = createServerFn({ method: "POST" })
     if (!text) return { ok: false as const, error: "Пустой ответ" };
     return { ok: true as const, text };
   });
+
+export type PortfolioChartPoint = {
+  t: number;
+  value: number;
+  benchmarkValue?: number;
+};
+
+export type PortfolioChartResponse = {
+  points: PortfolioChartPoint[];
+  startValue: number;
+  currentValue: number;
+  change: number;
+  changePct: number;
+  benchmarkChangePct?: number;
+  range: RangeId;
+};
+
+export const getPortfolioHistoricalChart = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      symbols: z.array(z.string()),
+      sharesMap: z.record(z.string(), z.number()),
+      costPricesMap: z.record(z.string(), z.number()),
+      range: z.enum(RANGE_IDS),
+      includeBenchmark: z.boolean().optional(),
+    }),
+  )
+  .handler(async ({ data }): Promise<PortfolioChartResponse> => {
+    const range = data.range as RangeId;
+    const spec = rangeById(range);
+    const symbols = data.symbols;
+    const sharesMap = data.sharesMap;
+    const costPricesMap = data.costPricesMap;
+
+    const cacheKey = `pfchart:${symbols.slice().sort().join(",")}:${range}:${data.includeBenchmark ? "1" : "0"}`;
+    const cached = fromCache<PortfolioChartResponse>(cacheKey, 20_000);
+    if (cached) return cached;
+
+    // Fetch each constituent using individual cache so multiple portfolios share data
+    const fetches = symbols.map(async (sym) => {
+      const symCacheKey = `symchart:${sym}:${spec.yahoo}:${spec.interval}`;
+      const cachedSym = fromCache<{ points: ChartPoint[]; price: number }>(symCacheKey, 45_000);
+      if (cachedSym) return { symbol: sym, ...cachedSym };
+
+      try {
+        const raw = await fetchChartRaw(sym, spec.yahoo, spec.interval);
+        const parsed = parsePoints(raw);
+        const price = num(parsed.meta.regularMarketPrice) || (parsed.points[parsed.points.length - 1]?.c ?? 0);
+        const entry = { points: parsed.points, price };
+        toCache(symCacheKey, entry);
+        return { symbol: sym, ...entry };
+      } catch {
+        return {
+          symbol: sym,
+          points: [] as ChartPoint[],
+          price: costPricesMap[sym] || 100,
+        };
+      }
+    });
+
+    let benchmarkPoints: ChartPoint[] = [];
+    if (data.includeBenchmark) {
+      const benchCacheKey = `symchart:ACWI:${spec.yahoo}:${spec.interval}`;
+      const cachedBench = fromCache<ChartPoint[]>(benchCacheKey, 45_000);
+      if (cachedBench) {
+        benchmarkPoints = cachedBench;
+      } else {
+        try {
+          const rawBench = await fetchChartRaw("ACWI", spec.yahoo, spec.interval);
+          benchmarkPoints = parsePoints(rawBench).points;
+          toCache(benchCacheKey, benchmarkPoints);
+        } catch {
+          // ignore benchmark error
+        }
+      }
+    }
+
+    const results = await Promise.all(fetches);
+
+    // Collect all chronological timestamps
+    const allTimestampsSet = new Set<number>();
+    for (const r of results) {
+      for (const p of r.points) {
+        allTimestampsSet.add(p.t);
+      }
+    }
+    if (data.includeBenchmark && benchmarkPoints.length > 0) {
+      for (const p of benchmarkPoints) {
+        allTimestampsSet.add(p.t);
+      }
+    }
+
+    const allTimestamps = Array.from(allTimestampsSet).sort((a, b) => a - b);
+    if (allTimestamps.length === 0) {
+      return {
+        points: [],
+        startValue: 0,
+        currentValue: 0,
+        change: 0,
+        changePct: 0,
+        range,
+      };
+    }
+
+    const symbolPointMaps = new Map<string, ChartPoint[]>();
+    results.forEach((r) => {
+      symbolPointMaps.set(r.symbol, r.points);
+    });
+
+    // Chronological sweep with Last Observation Carried Forward (LOCF)
+    const stockPointers = new Map<string, number>();
+    const stockPrices = new Map<string, number>();
+
+    for (const sym of symbols) {
+      stockPointers.set(sym, 0);
+      const pts = symbolPointMaps.get(sym) || [];
+      const firstValidPrice = pts[0]?.c ?? costPricesMap[sym] ?? 100;
+      stockPrices.set(sym, firstValidPrice);
+    }
+
+    let benchPtr = 0;
+    let benchPrice = benchmarkPoints[0]?.c;
+    const benchStartPrice = benchPrice;
+
+    const rawPortfolioPoints: PortfolioChartPoint[] = [];
+
+    for (const t of allTimestamps) {
+      let totalPortfolioVal = 0;
+
+      for (const sym of symbols) {
+        const pts = symbolPointMaps.get(sym) || [];
+        let ptr = stockPointers.get(sym) ?? 0;
+        while (ptr + 1 < pts.length && pts[ptr + 1]!.t <= t) {
+          ptr++;
+          stockPrices.set(sym, pts[ptr]!.c);
+        }
+        stockPointers.set(sym, ptr);
+
+        const price = stockPrices.get(sym) ?? costPricesMap[sym] ?? 100;
+        const shares = sharesMap[sym] || 1;
+        totalPortfolioVal += price * shares;
+      }
+
+      let benchRatio: number | undefined = undefined;
+      if (data.includeBenchmark && benchmarkPoints.length > 0 && benchStartPrice) {
+        while (benchPtr + 1 < benchmarkPoints.length && benchmarkPoints[benchPtr + 1]!.t <= t) {
+          benchPtr++;
+          benchPrice = benchmarkPoints[benchPtr]!.c;
+        }
+        if (benchPrice) {
+          benchRatio = benchPrice / benchStartPrice;
+        }
+      }
+
+      rawPortfolioPoints.push({
+        t,
+        value: totalPortfolioVal,
+        benchmarkValue: benchRatio,
+      });
+    }
+
+    const startVal = rawPortfolioPoints[0]?.value || 1;
+    const currentVal = rawPortfolioPoints[rawPortfolioPoints.length - 1]?.value || 1;
+    const change = currentVal - startVal;
+    const changePct = startVal > 0 ? (change / startVal) * 100 : 0;
+
+    // Scale benchmark line to startVal for visual alignment
+    if (benchmarkPoints.length > 0) {
+      rawPortfolioPoints.forEach((p) => {
+        if (p.benchmarkValue !== undefined) {
+          p.benchmarkValue = startVal * p.benchmarkValue;
+        }
+      });
+    }
+
+    const lastBench = rawPortfolioPoints[rawPortfolioPoints.length - 1]?.benchmarkValue;
+    const benchmarkChangePct =
+      lastBench && startVal > 0 ? ((lastBench - startVal) / startVal) * 100 : undefined;
+
+    // Downsample if over 180 points for buttery-smooth SVG rendering
+    const finalPoints =
+      rawPortfolioPoints.length > 180
+        ? (downsample(rawPortfolioPoints as unknown as ChartPoint[], 180) as unknown as PortfolioChartPoint[])
+        : rawPortfolioPoints;
+
+    const response: PortfolioChartResponse = {
+      points: finalPoints,
+      startValue: startVal,
+      currentValue: currentVal,
+      change,
+      changePct,
+      benchmarkChangePct,
+      range,
+    };
+
+    return toCache(cacheKey, response);
+  });
+

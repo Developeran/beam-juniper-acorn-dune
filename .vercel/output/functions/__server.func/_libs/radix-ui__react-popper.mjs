@@ -1,6 +1,5 @@
 import "../_runtime.mjs";
-import { n as require_react } from "./@radix-ui/react-compose-refs+[...].mjs";
-import { n as require_jsx_runtime, t as createContextScope } from "./radix-ui__react-context+react.mjs";
+import { a as createContextScope, c as require_react, s as require_jsx_runtime } from "./@radix-ui/react-collection+[...].mjs";
 require_react();
 require_jsx_runtime();
 var __defProp = Object.defineProperty;
