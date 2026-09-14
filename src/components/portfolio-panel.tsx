@@ -55,6 +55,50 @@ const PALETTE = [
   "#512da8", // Deep indigo
 ];
 
+const STORAGE_KEY = "grok_monitor_portfolio_v5";
+
+function ensureAllHoldings(list: PortfolioHolding[]): PortfolioHolding[] {
+  const result = [...list];
+  const hasInfaQnt = result.some(
+    (h) => h.symbol === "QNT" && cleanGroupName(h.portfolioGroup) === "Infa plus banks",
+  );
+  if (!hasInfaQnt) {
+    const qntInfa = DEFAULT_DEMO_HOLDINGS.find((h) => h.id === "QNT-17");
+    if (qntInfa) {
+      const kkrIndex = result.findIndex(
+        (h) => h.symbol === "KKR" && cleanGroupName(h.portfolioGroup) === "Infa plus banks",
+      );
+      if (kkrIndex !== -1) {
+        result.splice(kkrIndex, 0, qntInfa);
+      } else {
+        result.push(qntInfa);
+      }
+    }
+  }
+
+  const hasAiQnt = result.some(
+    (h) => h.symbol === "QNT" && cleanGroupName(h.portfolioGroup) === "AI plus finance",
+  );
+  if (!hasAiQnt) {
+    const qntAi = DEFAULT_DEMO_HOLDINGS.find((h) => h.id === "QNT-21");
+    if (qntAi) {
+      const kkrIndex = result.findIndex(
+        (h) => h.symbol === "KKR" && cleanGroupName(h.portfolioGroup) === "AI plus finance",
+      );
+      if (kkrIndex !== -1) {
+        result.splice(kkrIndex + 1, 0, qntAi);
+      } else {
+        result.push(qntAi);
+      }
+    }
+  }
+
+  return result.map((h) => ({
+    ...h,
+    portfolioGroup: cleanGroupName(h.portfolioGroup),
+  }));
+}
+
 export function PortfolioPanel({
   quotes,
   onSelectTicker,
@@ -64,25 +108,42 @@ export function PortfolioPanel({
 }) {
   const [holdings, setHoldings] = useState<PortfolioHolding[]>(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("grok_monitor_portfolio_v4");
-      if (saved) {
+      const savedV5 = localStorage.getItem(STORAGE_KEY);
+      if (savedV5) {
         try {
-          const parsed = JSON.parse(saved);
+          const parsed = JSON.parse(savedV5);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            return parsed.map((h: PortfolioHolding) => ({
-              ...h,
-              portfolioGroup: cleanGroupName(h.portfolioGroup),
-            }));
+            return ensureAllHoldings(parsed);
+          }
+        } catch {
+          // ignore
+        }
+      }
+
+      const savedV4 = localStorage.getItem("grok_monitor_portfolio_v4");
+      if (savedV4) {
+        try {
+          const parsed = JSON.parse(savedV4);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const upgraded = ensureAllHoldings(parsed);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(upgraded));
+            return upgraded;
           }
         } catch {
           // ignore
         }
       }
     }
-    return DEFAULT_DEMO_HOLDINGS.map((h) => ({
-      ...h,
-      portfolioGroup: cleanGroupName(h.portfolioGroup),
-    }));
+
+    const initial = ensureAllHoldings(DEFAULT_DEMO_HOLDINGS);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+      } catch {
+        // ignore
+      }
+    }
+    return initial;
   });
 
   const [benchmark, setBenchmark] = useState<BenchmarkIndicative>(DEFAULT_BENCHMARK_INDICATIVE);
@@ -189,7 +250,7 @@ export function PortfolioPanel({
     setHoldings(cleaned);
     if (updatedBenchmark) setBenchmark(updatedBenchmark);
     if (typeof window !== "undefined") {
-      localStorage.setItem("grok_monitor_portfolio_v4", JSON.stringify(cleaned));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
     }
   };
 

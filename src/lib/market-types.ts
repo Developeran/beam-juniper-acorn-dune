@@ -46,6 +46,7 @@ export const DEFAULT_SYMBOLS = [
   "XMTR",
   "BAC",
   "ARM",
+  "QNT",
   "VIRT",
   "AAPL",
   "NVDA",
