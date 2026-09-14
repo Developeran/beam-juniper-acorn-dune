@@ -4,16 +4,16 @@ import { a as DialogOverlay$1, c as DialogTrigger$1, i as DialogDescription$1, n
 import { t as createServerFn } from "./ssr.mjs";
 import { c as string, o as object } from "../_libs/zod.mjs";
 import { i as displayTicker, n as RANGES$1, o as rangeById, t as DEFAULT_SYMBOLS } from "./market-types-DyO5ZbjN.mjs";
-import { A as ChartColumn, C as Ellipsis, D as Clock, E as Copy, F as Building2, I as ArrowLeftRight, L as Activity, M as Calendar, N as CalendarPlus, O as ChevronDown, P as Calculator, S as ExternalLink, T as DollarSign, _ as LoaderCircle, a as Trash2, b as GitCompare, c as ShieldAlert, d as RefreshCw, f as Plus, g as PanelLeftClose, h as PanelLeftOpen, i as TrendingDown, j as ChartLine, k as Check, l as Search, m as PanelRightClose, o as Star, p as PanelRightOpen, r as TrendingUp, s as Sparkles, t as X, u as Scale, v as List, w as Download, x as FileSpreadsheet, y as Layers } from "../_libs/lucide-react.mjs";
+import { A as ChevronDown, C as FileSpreadsheet, D as DollarSign, E as Download, F as CalendarPlus, I as Calculator, L as Building2, M as ChartColumn, N as ChartLine, O as Copy, P as Calendar, R as ArrowLeftRight, S as GitCompare, T as Ellipsis, _ as PanelLeftOpen, a as TrendingDown, b as List, c as Sparkles, d as Scale, f as RotateCcw, g as PanelRightClose, h as PanelRightOpen, i as TrendingUp, j as Check, k as Clock, l as ShieldAlert, m as Plus, n as Upload, o as Trash2, p as RefreshCw, s as Star, t as X, u as Search, v as PanelLeftClose, w as ExternalLink, x as Layers, y as LoaderCircle, z as Activity } from "../_libs/lucide-react.mjs";
 import { t as useQuery } from "../_libs/tanstack__react-query.mjs";
 import { i as keepPreviousData } from "../_libs/tanstack__query-core.mjs";
 import { n as toast } from "../_libs/sonner.mjs";
-import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-Bf-GBy1j.mjs";
+import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-BCX6pH7u.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
-import { i as Trigger, n as List$1, r as Root2, t as Content } from "../_libs/radix-ui__react-tabs.mjs";
 import { n as create, t as persist } from "../_libs/zustand.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DC8s6eve.js
+import { i as Trigger, n as List$1, r as Root2, t as Content } from "../_libs/radix-ui__react-tabs.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-DNlxByI7.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function cn(...inputs) {
@@ -706,6 +706,47 @@ function Skeleton({ className, ...props }) {
 		...props
 	});
 }
+var useWatchlist = create()(persist((set, get) => ({
+	symbols: [...DEFAULT_SYMBOLS],
+	selected: "GS",
+	range: "5y",
+	select: (symbol) => set({ selected: symbol }),
+	add: (raw) => {
+		const symbol = raw.trim().toUpperCase();
+		if (!symbol) return;
+		const symbols = get().symbols;
+		if (symbols.includes(symbol)) {
+			set({ selected: symbol });
+			return;
+		}
+		set({
+			symbols: [symbol, ...symbols],
+			selected: symbol
+		});
+	},
+	remove: (symbol) => {
+		const symbols = get().symbols.filter((s) => s !== symbol);
+		set({
+			symbols,
+			selected: get().selected === symbol ? symbols[0] ?? "" : get().selected
+		});
+	},
+	setRange: (range) => set({ range }),
+	setSymbols: (newSymbols) => {
+		const clean = Array.from(new Set(newSymbols.map((s) => s.trim().toUpperCase()).filter(Boolean)));
+		if (clean.length === 0) return;
+		set({
+			symbols: clean,
+			selected: clean[0] ?? ""
+		});
+	},
+	resetToDefault: () => {
+		set({
+			symbols: [...DEFAULT_SYMBOLS],
+			selected: "GS"
+		});
+	}
+}), { name: "monitor-watchlist-v1" }));
 function PendingRow({ symbol, active, onSelect, onRemove }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: cn("group relative flex w-full items-center gap-2 rounded-lg px-2 py-2 pr-9 text-left md:pr-2", active ? "bg-accent-soft" : ""),
@@ -726,7 +767,7 @@ function PendingRow({ symbol, active, onSelect, onRemove }) {
 				e.stopPropagation();
 				onRemove();
 			},
-			className: "absolute top-1/2 right-1 flex size-8 -translate-y-1/2 items-center justify-center rounded-md text-muted hover:bg-surface hover:text-down md:hidden md:group-hover:flex",
+			className: "absolute top-1/2 right-1 flex size-8 -translate-y-1/2 items-center justify-center rounded-md text-muted hover:bg-surface hover:text-down md:hidden md:group-hover:flex cursor-pointer",
 			"aria-label": "Убрать из списка",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "size-3.5" })
 		})]
@@ -739,7 +780,7 @@ function Row({ quote, active, onSelect, onRemove }) {
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 			type: "button",
 			onClick: onSelect,
-			className: "flex min-w-0 flex-1 items-center gap-2",
+			className: "flex min-w-0 flex-1 items-center gap-2 cursor-pointer",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkline, {
 				values: quote.spark,
 				up
@@ -771,7 +812,7 @@ function Row({ quote, active, onSelect, onRemove }) {
 				e.stopPropagation();
 				onRemove();
 			},
-			className: "absolute top-1/2 right-1 flex size-8 -translate-y-1/2 items-center justify-center rounded-md text-muted hover:bg-surface hover:text-down md:hidden md:group-hover:flex",
+			className: "absolute top-1/2 right-1 flex size-8 -translate-y-1/2 items-center justify-center rounded-md text-muted hover:bg-surface hover:text-down md:hidden md:group-hover:flex cursor-pointer",
 			"aria-label": "Убрать из списка",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "size-3.5" })
 		})]
@@ -779,49 +820,200 @@ function Row({ quote, active, onSelect, onRemove }) {
 }
 function WatchlistPanel({ symbols = [], quotes = [], selected, loading, error, onSelect, onRemove }) {
 	const bySymbol = new Map(quotes.map((q) => [q.symbol, q]));
+	const setSymbols = useWatchlist((s) => s.setSymbols);
+	const resetToDefault = useWatchlist((s) => s.resetToDefault);
+	const [copied, setCopied] = (0, import_react.useState)(false);
+	const [importOpen, setImportOpen] = (0, import_react.useState)(false);
+	const [importText, setImportText] = (0, import_react.useState)("");
+	const handleCopyList = () => {
+		const text = symbols.join(", ");
+		navigator.clipboard.writeText(text);
+		setCopied(true);
+		setTimeout(() => setCopied(false), 2e3);
+		toast.success(`Скопировано ${symbols.length} тикеров в буфер обмена`);
+	};
+	const parsedImportSymbols = importText.split(/[\s,;]+/).map((s) => s.trim().toUpperCase()).filter((s) => /^[A-Za-z0-9.^_=/-]{1,20}$/.test(s));
+	const handleAppendImport = () => {
+		if (parsedImportSymbols.length === 0) {
+			toast.error("Не найдено корректных тикеров для добавления");
+			return;
+		}
+		const merged = Array.from(/* @__PURE__ */ new Set([...symbols, ...parsedImportSymbols]));
+		setSymbols(merged);
+		setImportText("");
+		setImportOpen(false);
+		toast.success(`Добавлено ${parsedImportSymbols.length} тикеров в список!`);
+	};
+	const handleReplaceImport = () => {
+		if (parsedImportSymbols.length === 0) {
+			toast.error("Не найдено корректных тикеров для добавления");
+			return;
+		}
+		const clean = Array.from(new Set(parsedImportSymbols));
+		setSymbols(clean);
+		setImportText("");
+		setImportOpen(false);
+		toast.success(`Список обновлен: ${clean.length} тикеров!`);
+	};
+	const handleReset = () => {
+		if (confirm("Сбросить список тикеров к исходному набору по умолчанию?")) {
+			resetToDefault();
+			toast.info("Список тикеров сброшен к исходному набору");
+		}
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex h-full min-h-0 flex-col",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex items-center gap-2 px-3 pt-3 pb-2",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Star, { className: "size-3.5 fill-fg text-fg" }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-					className: "text-xs font-medium tracking-wide text-muted uppercase",
-					children: "Мой список"
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "text-xs tabular-nums text-subtle",
-					children: symbols.length
-				})
-			]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "min-h-0 flex-1 overflow-y-auto px-1.5 pb-3",
-			children: [
-				symbols.map((symbol) => {
-					const quote = bySymbol.get(symbol);
-					if (!quote) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PendingRow, {
-						symbol,
-						active: symbol === selected,
-						onSelect: () => onSelect(symbol),
-						onRemove: () => onRemove(symbol)
-					}, symbol);
-					return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Row, {
-						quote,
-						active: symbol === selected,
-						onSelect: () => onSelect(symbol),
-						onRemove: () => onRemove(symbol)
-					}, symbol);
-				}),
-				symbols.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "px-3 py-8 text-center text-sm text-muted",
-					children: "Список пуст. Найдите бумагу в поиске, чтобы добавить её."
-				}),
-				error && symbols.length > 0 && quotes.length === 0 && !loading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "px-3 py-2 text-center text-xs text-down",
-					children: "Не удалось обновить котировки"
-				})
-			]
-		})]
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between border-b border-border/60 px-3 py-2.5 bg-surface/30",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-1.5",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Star, { className: "size-3.5 fill-[#1a73e8] text-[#1a73e8]" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+							className: "text-xs font-semibold tracking-wide text-fg uppercase",
+							children: "Мой список"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "rounded-full bg-bg px-1.5 py-0.2 text-[10px] font-mono text-muted border border-border",
+							children: symbols.length
+						})
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-1",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: handleCopyList,
+							className: "rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer",
+							title: "Скопировать список тикеров (для переноса на другой ПК)",
+							children: copied ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "size-3.5 text-up" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "size-3.5" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+							open: importOpen,
+							onOpenChange: setImportOpen,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+								asChild: true,
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									className: "rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer",
+									title: "Импортировать / Вставить список тикеров",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "size-3.5" })
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+								className: "sm:max-w-md",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+									className: "text-base font-semibold flex items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "size-4 text-accent" }), "Импорт и перенос тикеров"]
+								}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-4 pt-2",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "text-xs text-muted leading-relaxed",
+											children: [
+												"Вставьте список тикеров через запятую, пробел или с новой строки (например:",
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("code", {
+													className: "rounded bg-bg px-1 py-0.5 font-mono text-[11px] text-fg",
+													children: "AAPL, MSFT, NVDA, TSLA, PLTR"
+												}),
+												"). Изменения сохраняются автоматически в браузере."
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
+											value: importText,
+											onChange: (e) => setImportText(e.target.value),
+											placeholder: "Вставьте тикеры: AAPL, GOOGL, NVDA, BTC-USD...",
+											className: "w-full h-28 rounded-xl border border-border bg-bg p-3 text-xs font-mono focus:border-accent focus:outline-hidden"
+										}),
+										parsedImportSymbols.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "text-xs text-muted font-mono",
+											children: [
+												"Распознано тикеров:",
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+													className: "text-fg font-semibold",
+													children: parsedImportSymbols.length
+												}),
+												" ",
+												"(",
+												parsedImportSymbols.slice(0, 6).join(", "),
+												parsedImportSymbols.length > 6 ? "..." : "",
+												")"
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 pt-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+												type: "button",
+												variant: "outline",
+												size: "sm",
+												onClick: handleAppendImport,
+												disabled: parsedImportSymbols.length === 0,
+												className: "text-xs",
+												children: "Добавить к текущему списку"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+												type: "button",
+												size: "sm",
+												onClick: handleReplaceImport,
+												disabled: parsedImportSymbols.length === 0,
+												className: "text-xs",
+												children: "Заменить весь список"
+											})]
+										})
+									]
+								})]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: handleReset,
+							className: "rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer",
+							title: "Сбросить список к исходным",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RotateCcw, { className: "size-3.5" })
+						})
+					]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "px-3 py-1 bg-bg/40 text-[10px] text-muted flex items-center justify-between border-b border-border/40",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "flex items-center gap-1",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-1.5 rounded-full bg-up animate-pulse" }), "Автосохранение в браузере"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "font-mono text-[9px] opacity-75",
+					children: "localStorage"
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "min-h-0 flex-1 overflow-y-auto px-1.5 pb-3",
+				children: [
+					symbols.map((symbol) => {
+						const quote = bySymbol.get(symbol);
+						if (!quote) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PendingRow, {
+							symbol,
+							active: symbol === selected,
+							onSelect: () => onSelect(symbol),
+							onRemove: () => onRemove(symbol)
+						}, symbol);
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Row, {
+							quote,
+							active: symbol === selected,
+							onSelect: () => onSelect(symbol),
+							onRemove: () => onRemove(symbol)
+						}, symbol);
+					}),
+					symbols.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "px-3 py-8 text-center text-sm text-muted",
+						children: "Список пуст. Найдите бумагу в поиске, чтобы добавить её."
+					}),
+					error && symbols.length > 0 && quotes.length === 0 && !loading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "px-3 py-2 text-center text-xs text-down",
+						children: "Не удалось обновить котировки"
+					})
+				]
+			})
+		]
 	});
 }
 function Input({ className, type, ...props }) {
@@ -3633,33 +3825,6 @@ var TabsContent = import_react.forwardRef(({ className, ...props }, ref) => /* @
 	...props
 }));
 TabsContent.displayName = Content.displayName;
-var useWatchlist = create()(persist((set, get) => ({
-	symbols: [...DEFAULT_SYMBOLS],
-	selected: "GS",
-	range: "5y",
-	select: (symbol) => set({ selected: symbol }),
-	add: (raw) => {
-		const symbol = raw.trim().toUpperCase();
-		if (!symbol) return;
-		const symbols = get().symbols;
-		if (symbols.includes(symbol)) {
-			set({ selected: symbol });
-			return;
-		}
-		set({
-			symbols: [symbol, ...symbols],
-			selected: symbol
-		});
-	},
-	remove: (symbol) => {
-		const symbols = get().symbols.filter((s) => s !== symbol);
-		set({
-			symbols,
-			selected: get().selected === symbol ? symbols[0] ?? "" : get().selected
-		});
-	},
-	setRange: (range) => set({ range })
-}), { name: "monitor-watchlist-v1" }));
 function sameSymbols(a, b) {
 	return a.length === b.length && a.every((s, i) => s === b[i]);
 }

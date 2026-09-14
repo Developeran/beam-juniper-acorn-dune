@@ -10,6 +10,8 @@ type WatchlistState = {
   add: (symbol: string) => void;
   remove: (symbol: string) => void;
   setRange: (range: WatchlistState["range"]) => void;
+  setSymbols: (symbols: string[]) => void;
+  resetToDefault: () => void;
 };
 
 export const useWatchlist = create<WatchlistState>()(
@@ -36,6 +38,16 @@ export const useWatchlist = create<WatchlistState>()(
         set({ symbols, selected });
       },
       setRange: (range) => set({ range }),
+      setSymbols: (newSymbols) => {
+        const clean = Array.from(
+          new Set(newSymbols.map((s) => s.trim().toUpperCase()).filter(Boolean)),
+        );
+        if (clean.length === 0) return;
+        set({ symbols: clean, selected: clean[0] ?? "" });
+      },
+      resetToDefault: () => {
+        set({ symbols: [...DEFAULT_SYMBOLS], selected: DEFAULT_SELECTED });
+      },
     }),
     { name: "monitor-watchlist-v1" },
   ),

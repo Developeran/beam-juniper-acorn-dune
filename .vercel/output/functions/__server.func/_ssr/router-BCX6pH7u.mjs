@@ -4,12 +4,12 @@ import { _ as useRouter, f as createRouter, g as createRootRoute, h as createFil
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
 import { a as number, c as string, i as literal, l as union, n as array, o as object, r as boolean, s as record, t as _enum } from "../_libs/zod.mjs";
 import { r as RANGE_IDS, t as DEFAULT_SYMBOLS } from "./market-types-DyO5ZbjN.mjs";
-import { n as TriangleAlert } from "../_libs/lucide-react.mjs";
+import { r as TriangleAlert } from "../_libs/lucide-react.mjs";
 import { n as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { t as Provider } from "../_libs/radix-ui__react-tooltip.mjs";
 import { t as Toaster } from "../_libs/sonner.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-Bf-GBy1j.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-BCX6pH7u.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var __defProp = Object.defineProperty;
@@ -319,7 +319,7 @@ function TooltipProvider({ delayDuration = 250, ...props }) {
 		...props
 	});
 }
-var styles_default = "/assets/styles-TYGAfdHT.css";
+var styles_default = "/assets/styles-BwdlcCqL.css";
 var APP_NAME = "Монитор";
 var Route$1 = createRootRoute({
 	head: () => ({
@@ -431,7 +431,7 @@ var getPortfolioHistoricalChart = createServerFn({ method: "POST" }).validator(o
 	range: _enum(RANGE_IDS),
 	includeBenchmark: boolean().optional()
 })).handler(createSsrRpc("127a987169ec391ad6880045217735076b2629930e2591dfee634e748e576177"));
-var $$splitComponentImporter = () => import("./routes-DC8s6eve.mjs");
+var $$splitComponentImporter = () => import("./routes-DNlxByI7.mjs");
 var Route = createFileRoute("/")({
 	loader: async () => {
 		try {
