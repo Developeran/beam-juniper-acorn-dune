@@ -1,4 +1,33 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/market-types-DyO5ZbjN.js
+//#region node_modules/.nitro/vite/services/ssr/assets/market-types-gv-rWKG5.js
+var watchlist_default = {
+	version: 1,
+	updatedAt: "2026-09-14",
+	description: "Централизованный список тикеров наблюдения (Watchlist) Google Market Monitor. Все устройства подтягивают тикеры из этого файла.",
+	symbols: [
+		"GS",
+		"TSM",
+		"ASML",
+		"LRCX",
+		"DRAM",
+		"GOOGL",
+		"ACWI",
+		"GE",
+		"RY",
+		"KKR",
+		"FWONK",
+		"PRLB",
+		"XMTR",
+		"BAC",
+		"ARM",
+		"QNT",
+		"VIRT",
+		"AAPL",
+		"NVDA",
+		"MSFT",
+		"TSLA",
+		"BTC-USD"
+	]
+};
 var RANGE_IDS = [
 	"1d",
 	"5d",
@@ -67,30 +96,8 @@ var RANGES = [
 		interval: "1mo"
 	}
 ];
-var DEFAULT_SYMBOLS = [
-	"GS",
-	"TSM",
-	"ASML",
-	"LRCX",
-	"DRAM",
-	"GOOGL",
-	"ACWI",
-	"GE",
-	"RY",
-	"KKR",
-	"FWONK",
-	"PRLB",
-	"XMTR",
-	"BAC",
-	"ARM",
-	"QNT",
-	"VIRT",
-	"AAPL",
-	"NVDA",
-	"MSFT",
-	"TSLA",
-	"BTC-USD"
-];
+var DEFAULT_SYMBOLS = watchlist_default.symbols;
+var WATCHLIST_CONFIG_VERSION = watchlist_default.version;
 var EXCHANGE_LABEL = {
 	PAR: "EPA",
 	NMS: "NASDAQ",
@@ -120,4 +127,4 @@ function rangeById(id) {
 	return RANGES.find((r) => r.id === id) ?? RANGES[6];
 }
 //#endregion
-export { exchangeLabel as a, displayTicker as i, RANGES as n, rangeById as o, RANGE_IDS as r, DEFAULT_SYMBOLS as t };
+export { displayTicker as a, watchlist_default as c, WATCHLIST_CONFIG_VERSION as i, RANGES as n, exchangeLabel as o, RANGE_IDS as r, rangeById as s, DEFAULT_SYMBOLS as t };

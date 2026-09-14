@@ -7,6 +7,8 @@ import {
   Upload,
   RotateCcw,
   Sparkles,
+  Download,
+  RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Sparkline } from "@/components/sparkline";
@@ -149,6 +151,9 @@ export function WatchlistPanel({
   const setSymbols = useWatchlist((s) => s.setSymbols);
   const resetToDefault = useWatchlist((s) => s.resetToDefault);
 
+  const reloadFromFile = useWatchlist((s) => s.reloadFromFile);
+  const fileVersion = useWatchlist((s) => s.fileVersion);
+
   const [copied, setCopied] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [importText, setImportText] = useState("");
@@ -159,6 +164,29 @@ export function WatchlistPanel({
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     toast.success(`Скопировано ${symbols.length} тикеров в буфер обмена`);
+  };
+
+  const handleDownloadJson = () => {
+    const data = {
+      version: fileVersion || 1,
+      updatedAt: new Date().toISOString().split("T")[0],
+      description: "Список тикеров наблюдения (Watchlist) Google Market Monitor",
+      symbols,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "watchlist.json");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Файл watchlist.json скачан!");
+  };
+
+  const handleReloadFromFile = () => {
+    reloadFromFile();
+    toast.success("Список тикеров синхронизирован с файлом watchlist.json!");
   };
 
   const parsedImportSymbols = importText
@@ -211,7 +239,7 @@ export function WatchlistPanel({
           </span>
         </div>
 
-        {/* Quick Tools: Copy All, Import, Reset */}
+        {/* Quick Tools: Copy All, Download JSON, Sync from File, Import, Reset */}
         <div className="flex items-center gap-1">
           <button
             type="button"
@@ -220,6 +248,24 @@ export function WatchlistPanel({
             title="Скопировать список тикеров (для переноса на другой ПК)"
           >
             {copied ? <Check className="size-3.5 text-up" /> : <Copy className="size-3.5" />}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDownloadJson}
+            className="rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer"
+            title="Скачать файл watchlist.json"
+          >
+            <Download className="size-3.5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleReloadFromFile}
+            className="rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer"
+            title="Синхронизировать/подтянуть из файла watchlist.json"
+          >
+            <RefreshCw className="size-3.5" />
           </button>
 
           <Dialog open={importOpen} onOpenChange={setImportOpen}>
@@ -295,7 +341,7 @@ export function WatchlistPanel({
             type="button"
             onClick={handleReset}
             className="rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer"
-            title="Сбросить список к исходным"
+            title="Сбросить список к исходным из watchlist.json"
           >
             <RotateCcw className="size-3.5" />
           </button>
@@ -306,9 +352,9 @@ export function WatchlistPanel({
       <div className="px-3 py-1 bg-bg/40 text-[10px] text-muted flex items-center justify-between border-b border-border/40">
         <span className="flex items-center gap-1">
           <span className="size-1.5 rounded-full bg-up animate-pulse" />
-          Автосохранение в браузере
+          Синхронизировано с watchlist.json
         </span>
-        <span className="font-mono text-[9px] opacity-75">localStorage</span>
+        <span className="font-mono text-[9px] opacity-75">v{fileVersion || 1} · автосохранение</span>
       </div>
 
       {/* List items */}

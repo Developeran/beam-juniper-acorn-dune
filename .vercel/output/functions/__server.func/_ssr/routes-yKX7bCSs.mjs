@@ -3,17 +3,17 @@ import { c as require_react, n as Slot, s as require_jsx_runtime } from "../_lib
 import { a as DialogOverlay$1, c as DialogTrigger$1, i as DialogDescription$1, n as DialogClose, o as DialogPortal$1, r as DialogContent$1, s as DialogTitle$1, t as Dialog$1 } from "../_libs/@radix-ui/react-dialog+[...].mjs";
 import { t as createServerFn } from "./ssr.mjs";
 import { c as string, o as object } from "../_libs/zod.mjs";
-import { i as displayTicker, n as RANGES$1, o as rangeById, t as DEFAULT_SYMBOLS } from "./market-types-DyO5ZbjN.mjs";
+import { a as displayTicker, c as watchlist_default, i as WATCHLIST_CONFIG_VERSION, n as RANGES$1, s as rangeById, t as DEFAULT_SYMBOLS } from "./market-types-gv-rWKG5.mjs";
 import { A as ChevronDown, C as FileSpreadsheet, D as DollarSign, E as Download, F as CalendarPlus, I as Calculator, L as Building2, M as ChartColumn, N as ChartLine, O as Copy, P as Calendar, R as ArrowLeftRight, S as GitCompare, T as Ellipsis, _ as PanelLeftOpen, a as TrendingDown, b as List, c as Sparkles, d as Scale, f as RotateCcw, g as PanelRightClose, h as PanelRightOpen, i as TrendingUp, j as Check, k as Clock, l as ShieldAlert, m as Plus, n as Upload, o as Trash2, p as RefreshCw, s as Star, t as X, u as Search, v as PanelLeftClose, w as ExternalLink, x as Layers, y as LoaderCircle, z as Activity } from "../_libs/lucide-react.mjs";
 import { t as useQuery } from "../_libs/tanstack__react-query.mjs";
 import { i as keepPreviousData } from "../_libs/tanstack__query-core.mjs";
 import { n as toast } from "../_libs/sonner.mjs";
-import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-BCX6pH7u.mjs";
+import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-CK63Sae3.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { n as create, t as persist } from "../_libs/zustand.mjs";
 import { i as Trigger, n as List$1, r as Root2, t as Content } from "../_libs/radix-ui__react-tabs.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DNlxByI7.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-yKX7bCSs.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function cn(...inputs) {
@@ -710,6 +710,7 @@ var useWatchlist = create()(persist((set, get) => ({
 	symbols: [...DEFAULT_SYMBOLS],
 	selected: "GS",
 	range: "5y",
+	fileVersion: WATCHLIST_CONFIG_VERSION,
 	select: (symbol) => set({ selected: symbol }),
 	add: (raw) => {
 		const symbol = raw.trim().toUpperCase();
@@ -743,10 +744,34 @@ var useWatchlist = create()(persist((set, get) => ({
 	resetToDefault: () => {
 		set({
 			symbols: [...DEFAULT_SYMBOLS],
-			selected: "GS"
+			selected: "GS",
+			fileVersion: WATCHLIST_CONFIG_VERSION
+		});
+	},
+	reloadFromFile: () => {
+		set({
+			symbols: [...watchlist_default.symbols],
+			selected: watchlist_default.symbols[0] ?? "GS",
+			fileVersion: watchlist_default.version
 		});
 	}
-}), { name: "monitor-watchlist-v1" }));
+}), {
+	name: "monitor-watchlist-v2",
+	version: WATCHLIST_CONFIG_VERSION,
+	migrate: (persistedState, version) => {
+		const state = persistedState || {};
+		if (typeof version !== "number" || version < WATCHLIST_CONFIG_VERSION) {
+			const current = Array.isArray(state.symbols) ? state.symbols : [];
+			const merged = Array.from(/* @__PURE__ */ new Set([...watchlist_default.symbols, ...current]));
+			return {
+				...state,
+				symbols: merged,
+				fileVersion: WATCHLIST_CONFIG_VERSION
+			};
+		}
+		return state;
+	}
+}));
 function PendingRow({ symbol, active, onSelect, onRemove }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: cn("group relative flex w-full items-center gap-2 rounded-lg px-2 py-2 pr-9 text-left md:pr-2", active ? "bg-accent-soft" : ""),
@@ -822,6 +847,8 @@ function WatchlistPanel({ symbols = [], quotes = [], selected, loading, error, o
 	const bySymbol = new Map(quotes.map((q) => [q.symbol, q]));
 	const setSymbols = useWatchlist((s) => s.setSymbols);
 	const resetToDefault = useWatchlist((s) => s.resetToDefault);
+	const reloadFromFile = useWatchlist((s) => s.reloadFromFile);
+	const fileVersion = useWatchlist((s) => s.fileVersion);
 	const [copied, setCopied] = (0, import_react.useState)(false);
 	const [importOpen, setImportOpen] = (0, import_react.useState)(false);
 	const [importText, setImportText] = (0, import_react.useState)("");
@@ -831,6 +858,27 @@ function WatchlistPanel({ symbols = [], quotes = [], selected, loading, error, o
 		setCopied(true);
 		setTimeout(() => setCopied(false), 2e3);
 		toast.success(`Скопировано ${symbols.length} тикеров в буфер обмена`);
+	};
+	const handleDownloadJson = () => {
+		const data = {
+			version: fileVersion || 1,
+			updatedAt: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+			description: "Список тикеров наблюдения (Watchlist) Google Market Monitor",
+			symbols
+		};
+		const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.setAttribute("download", "watchlist.json");
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		toast.success("Файл watchlist.json скачан!");
+	};
+	const handleReloadFromFile = () => {
+		reloadFromFile();
+		toast.success("Список тикеров синхронизирован с файлом watchlist.json!");
 	};
 	const parsedImportSymbols = importText.split(/[\s,;]+/).map((s) => s.trim().toUpperCase()).filter((s) => /^[A-Za-z0-9.^_=/-]{1,20}$/.test(s));
 	const handleAppendImport = () => {
@@ -888,6 +936,20 @@ function WatchlistPanel({ symbols = [], quotes = [], selected, loading, error, o
 							className: "rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer",
 							title: "Скопировать список тикеров (для переноса на другой ПК)",
 							children: copied ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "size-3.5 text-up" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "size-3.5" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: handleDownloadJson,
+							className: "rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer",
+							title: "Скачать файл watchlist.json",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "size-3.5" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: handleReloadFromFile,
+							className: "rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer",
+							title: "Синхронизировать/подтянуть из файла watchlist.json",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "size-3.5" })
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
 							open: importOpen,
@@ -969,7 +1031,7 @@ function WatchlistPanel({ symbols = [], quotes = [], selected, loading, error, o
 							type: "button",
 							onClick: handleReset,
 							className: "rounded p-1 text-muted hover:text-fg hover:bg-surface transition-colors cursor-pointer",
-							title: "Сбросить список к исходным",
+							title: "Сбросить список к исходным из watchlist.json",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RotateCcw, { className: "size-3.5" })
 						})
 					]
@@ -979,10 +1041,14 @@ function WatchlistPanel({ symbols = [], quotes = [], selected, loading, error, o
 				className: "px-3 py-1 bg-bg/40 text-[10px] text-muted flex items-center justify-between border-b border-border/40",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 					className: "flex items-center gap-1",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-1.5 rounded-full bg-up animate-pulse" }), "Автосохранение в браузере"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-1.5 rounded-full bg-up animate-pulse" }), "Синхронизировано с watchlist.json"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 					className: "font-mono text-[9px] opacity-75",
-					children: "localStorage"
+					children: [
+						"v",
+						fileVersion || 1,
+						" · автосохранение"
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {

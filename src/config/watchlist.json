@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-14",
+  "description": "Централизованный список тикеров наблюдения (Watchlist) Google Market Monitor. Все устройства подтягивают тикеры из этого файла.",
+  "symbols": [
+    "GS",
+    "TSM",
+    "ASML",
+    "LRCX",
+    "DRAM",
+    "GOOGL",
+    "ACWI",
+    "GE",
+    "RY",
+    "KKR",
+    "FWONK",
+    "PRLB",
+    "XMTR",
+    "BAC",
+    "ARM",
+    "QNT",
+    "VIRT",
+    "AAPL",
+    "NVDA",
+    "MSFT",
+    "TSLA",
+    "BTC-USD"
+  ]
+}

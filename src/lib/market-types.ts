@@ -30,30 +30,10 @@ export const RANGES: RangeSpec[] = [
   { id: "max", label: "МАКС.", periodLabel: "за всё время", yahoo: "max", interval: "1mo" },
 ];
 
-export const DEFAULT_SYMBOLS = [
-  "GS",
-  "TSM",
-  "ASML",
-  "LRCX",
-  "DRAM",
-  "GOOGL",
-  "ACWI",
-  "GE",
-  "RY",
-  "KKR",
-  "FWONK",
-  "PRLB",
-  "XMTR",
-  "BAC",
-  "ARM",
-  "QNT",
-  "VIRT",
-  "AAPL",
-  "NVDA",
-  "MSFT",
-  "TSLA",
-  "BTC-USD",
-] as const;
+import watchlistConfig from "@/config/watchlist.json";
+
+export const DEFAULT_SYMBOLS: readonly string[] = watchlistConfig.symbols;
+export const WATCHLIST_CONFIG_VERSION = watchlistConfig.version;
 
 export const DEFAULT_SELECTED = "GS";
 
