@@ -3,17 +3,17 @@ import { c as require_react, n as Slot, s as require_jsx_runtime } from "../_lib
 import { a as DialogOverlay$1, c as DialogTrigger$1, i as DialogDescription$1, n as DialogClose, o as DialogPortal$1, r as DialogContent$1, s as DialogTitle$1, t as Dialog$1 } from "../_libs/@radix-ui/react-dialog+[...].mjs";
 import { t as createServerFn } from "./ssr.mjs";
 import { c as string, o as object } from "../_libs/zod.mjs";
-import { i as displayTicker, n as RANGES$1, o as rangeById, t as DEFAULT_SYMBOLS } from "./market-types-DxI6-M7C.mjs";
+import { i as displayTicker, n as RANGES$1, o as rangeById, t as DEFAULT_SYMBOLS } from "./market-types-DyO5ZbjN.mjs";
 import { A as ChartColumn, C as Ellipsis, D as Clock, E as Copy, F as Building2, I as ArrowLeftRight, L as Activity, M as Calendar, N as CalendarPlus, O as ChevronDown, P as Calculator, S as ExternalLink, T as DollarSign, _ as LoaderCircle, a as Trash2, b as GitCompare, c as ShieldAlert, d as RefreshCw, f as Plus, g as PanelLeftClose, h as PanelLeftOpen, i as TrendingDown, j as ChartLine, k as Check, l as Search, m as PanelRightClose, o as Star, p as PanelRightOpen, r as TrendingUp, s as Sparkles, t as X, u as Scale, v as List, w as Download, x as FileSpreadsheet, y as Layers } from "../_libs/lucide-react.mjs";
 import { t as useQuery } from "../_libs/tanstack__react-query.mjs";
 import { i as keepPreviousData } from "../_libs/tanstack__query-core.mjs";
 import { n as toast } from "../_libs/sonner.mjs";
-import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-CGaGyvmQ.mjs";
+import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-E_2MYFzy.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { i as Trigger, n as List$1, r as Root2, t as Content } from "../_libs/radix-ui__react-tabs.mjs";
 import { n as create, t as persist } from "../_libs/zustand.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DQKZclod.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-BmaJTYfN.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function cn(...inputs) {
@@ -1111,6 +1111,22 @@ var DEFAULT_DEMO_HOLDINGS = [
 		notes: "ARM Holdings • Infa plus banks"
 	},
 	{
+		id: "QNT-17",
+		symbol: "QNT",
+		rawSymbol: "NASDAQ:QNT",
+		stockName: "Quantinuum",
+		shares: 54122,
+		costPrice: 55.43,
+		costValue: 2999982,
+		sheetPrice: 49,
+		sheetValue: 2634118,
+		sheetPnlUsd: -365865,
+		sheetPnlPct: -12.2,
+		portfolioGroup: "Infa plus banks",
+		formationDate: "16.06",
+		notes: "Quantinuum • Infa plus banks"
+	},
+	{
 		id: "KKR-18",
 		symbol: "KKR",
 		rawSymbol: "NYSE:KKR",
@@ -1157,6 +1173,22 @@ var DEFAULT_DEMO_HOLDINGS = [
 		portfolioGroup: "AI plus finance",
 		formationDate: "16.06",
 		notes: "KKR & Co. • AI plus finance"
+	},
+	{
+		id: "QNT-21",
+		symbol: "QNT",
+		rawSymbol: "NASDAQ:QNT",
+		stockName: "Quantinuum Inc.",
+		shares: 54122,
+		costPrice: 55.43,
+		costValue: 2999982,
+		sheetPrice: 49,
+		sheetValue: 2634118,
+		sheetPnlUsd: -365865,
+		sheetPnlPct: -12.2,
+		portfolioGroup: "AI plus finance",
+		formationDate: "16.06",
+		notes: "Quantinuum Inc. • AI plus finance"
 	},
 	{
 		id: "VIRT-22",
@@ -1709,22 +1741,53 @@ var PALETTE = [
 	"#7b1fa2",
 	"#512da8"
 ];
+var STORAGE_KEY = "grok_monitor_portfolio_v5";
+function ensureAllHoldings(list) {
+	const result = [...list];
+	if (!result.some((h) => h.symbol === "QNT" && cleanGroupName(h.portfolioGroup) === "Infa plus banks")) {
+		const qntInfa = DEFAULT_DEMO_HOLDINGS.find((h) => h.id === "QNT-17");
+		if (qntInfa) {
+			const kkrIndex = result.findIndex((h) => h.symbol === "KKR" && cleanGroupName(h.portfolioGroup) === "Infa plus banks");
+			if (kkrIndex !== -1) result.splice(kkrIndex, 0, qntInfa);
+			else result.push(qntInfa);
+		}
+	}
+	if (!result.some((h) => h.symbol === "QNT" && cleanGroupName(h.portfolioGroup) === "AI plus finance")) {
+		const qntAi = DEFAULT_DEMO_HOLDINGS.find((h) => h.id === "QNT-21");
+		if (qntAi) {
+			const kkrIndex = result.findIndex((h) => h.symbol === "KKR" && cleanGroupName(h.portfolioGroup) === "AI plus finance");
+			if (kkrIndex !== -1) result.splice(kkrIndex + 1, 0, qntAi);
+			else result.push(qntAi);
+		}
+	}
+	return result.map((h) => ({
+		...h,
+		portfolioGroup: cleanGroupName(h.portfolioGroup)
+	}));
+}
 function PortfolioPanel({ quotes, onSelectTicker }) {
 	const [holdings, setHoldings] = (0, import_react.useState)(() => {
 		if (typeof window !== "undefined") {
-			const saved = localStorage.getItem("grok_monitor_portfolio_v4");
-			if (saved) try {
-				const parsed = JSON.parse(saved);
-				if (Array.isArray(parsed) && parsed.length > 0) return parsed.map((h) => ({
-					...h,
-					portfolioGroup: cleanGroupName(h.portfolioGroup)
-				}));
+			const savedV5 = localStorage.getItem(STORAGE_KEY);
+			if (savedV5) try {
+				const parsed = JSON.parse(savedV5);
+				if (Array.isArray(parsed) && parsed.length > 0) return ensureAllHoldings(parsed);
+			} catch {}
+			const savedV4 = localStorage.getItem("grok_monitor_portfolio_v4");
+			if (savedV4) try {
+				const parsed = JSON.parse(savedV4);
+				if (Array.isArray(parsed) && parsed.length > 0) {
+					const upgraded = ensureAllHoldings(parsed);
+					localStorage.setItem(STORAGE_KEY, JSON.stringify(upgraded));
+					return upgraded;
+				}
 			} catch {}
 		}
-		return DEFAULT_DEMO_HOLDINGS.map((h) => ({
-			...h,
-			portfolioGroup: cleanGroupName(h.portfolioGroup)
-		}));
+		const initial = ensureAllHoldings(DEFAULT_DEMO_HOLDINGS);
+		if (typeof window !== "undefined") try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+		} catch {}
+		return initial;
 	});
 	const [benchmark, setBenchmark] = (0, import_react.useState)(DEFAULT_BENCHMARK_INDICATIVE);
 	const [sheetUrl, setSheetUrl] = (0, import_react.useState)(DEFAULT_GOOGLE_SHEET_URL);
@@ -1803,7 +1866,7 @@ function PortfolioPanel({ quotes, onSelectTicker }) {
 		}));
 		setHoldings(cleaned);
 		if (updatedBenchmark) setBenchmark(updatedBenchmark);
-		if (typeof window !== "undefined") localStorage.setItem("grok_monitor_portfolio_v4", JSON.stringify(cleaned));
+		if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
 	};
 	const handleSyncFromSheet = async () => {
 		if (!sheetUrl.trim()) {
@@ -3059,7 +3122,20 @@ function MonitorApp({ initialQuotes, initialChart }) {
 	const [sheetOpen, setSheetOpen] = (0, import_react.useState)(false);
 	const [activeTab, setActiveTab] = (0, import_react.useState)("chart");
 	const [sidebarOpen, setSidebarOpen] = (0, import_react.useState)(true);
-	const [sidebarSide, setSidebarSide] = (0, import_react.useState)("right");
+	const [sidebarSide, setSidebarSide] = (0, import_react.useState)(() => {
+		if (typeof window !== "undefined") {
+			const saved = localStorage.getItem("grok_monitor_sidebar_side");
+			if (saved === "left" || saved === "right") return saved;
+		}
+		return "left";
+	});
+	const handleToggleSidebarSide = () => {
+		setSidebarSide((prev) => {
+			const next = prev === "left" ? "right" : "left";
+			if (typeof window !== "undefined") localStorage.setItem("grok_monitor_sidebar_side", next);
+			return next;
+		});
+	};
 	const quotesQuery = useQuery({
 		queryKey: ["quotes", symbols],
 		queryFn: () => getQuotes({ data: { symbols } }),
@@ -3199,7 +3275,7 @@ function MonitorApp({ initialQuotes, initialChart }) {
 				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: cn("mx-auto flex min-h-0 w-full max-w-[1920px] flex-1 overflow-hidden transition-all duration-300", sidebarSide === "right" ? "flex-row-reverse" : "flex-row"),
+				className: cn("mx-auto flex min-h-0 w-full max-w-7xl flex-1 overflow-hidden transition-all duration-300", sidebarSide === "right" ? "flex-row-reverse" : "flex-row"),
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
 					className: cn("hidden h-full shrink-0 overflow-hidden bg-sidebar transition-all duration-300 ease-in-out lg:flex lg:flex-col", sidebarSide === "right" ? "border-l border-border" : "border-r border-border", sidebarOpen ? "w-80 opacity-100" : "w-0 border-none opacity-0 pointer-events-none"),
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -3208,7 +3284,7 @@ function MonitorApp({ initialQuotes, initialChart }) {
 							className: "flex items-center gap-1",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 								type: "button",
-								onClick: () => setSidebarSide((s) => s === "right" ? "left" : "right"),
+								onClick: handleToggleSidebarSide,
 								className: "rounded p-1 text-muted hover:text-fg hover:bg-bg transition-colors cursor-pointer",
 								title: sidebarSide === "right" ? "Переместить панель влево" : "Переместить панель вправо",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeftRight, { className: "size-3.5" })
@@ -3225,7 +3301,7 @@ function MonitorApp({ initialQuotes, initialChart }) {
 						children: panel
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
-					className: "min-h-0 min-w-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6 md:px-8 md:py-6",
+					className: "min-h-0 min-w-0 flex-1 overflow-y-auto px-3 py-5 md:px-8 md:py-6",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
 						value: activeTab,
 						onValueChange: setActiveTab,

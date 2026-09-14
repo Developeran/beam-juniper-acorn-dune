@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/market-types-DxI6-M7C.js
+//#region node_modules/.nitro/vite/services/ssr/assets/market-types-DyO5ZbjN.js
 var RANGE_IDS = [
 	"1d",
 	"5d",
@@ -83,6 +83,7 @@ var DEFAULT_SYMBOLS = [
 	"XMTR",
 	"BAC",
 	"ARM",
+	"QNT",
 	"VIRT",
 	"AAPL",
 	"NVDA",

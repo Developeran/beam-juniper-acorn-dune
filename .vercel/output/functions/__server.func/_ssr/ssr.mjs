@@ -88,7 +88,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-CDNPjB_M.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-BY0gvfZC.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -110,15 +110,15 @@ async function getStartManifest(matchedRoutes) {
 var manifest = {
 	"127a987169ec391ad6880045217735076b2629930e2591dfee634e748e576177": {
 		functionName: "getPortfolioHistoricalChart_createServerFn_handler",
-		importer: () => import("./market--cMm4usW.mjs")
+		importer: () => import("./market-CTc_EJR3.mjs")
 	},
 	"2bf7888de22fd263c77d5c3316d45b5cad8bcc3eff7578ee88d98d3bb30b31d4": {
 		functionName: "explainMove_createServerFn_handler",
-		importer: () => import("./market--cMm4usW.mjs")
+		importer: () => import("./market-CTc_EJR3.mjs")
 	},
 	"6526d28b5af5f698b2c7b1aadfdfd5ec325fff6f69da3f7dc653990e6804737e": {
 		functionName: "searchSymbols_createServerFn_handler",
-		importer: () => import("./market--cMm4usW.mjs")
+		importer: () => import("./market-CTc_EJR3.mjs")
 	},
 	"c3bf7882619a523e48b9c5d821a31eccf348c893591eb3fd9843ff2c883403bd": {
 		functionName: "fetchSheetData_createServerFn_handler",
@@ -126,11 +126,11 @@ var manifest = {
 	},
 	"e7ba96f3582fa61a1e6a4c12c9949c309908c4cad462d84783ed245a07a0ceac": {
 		functionName: "getChart_createServerFn_handler",
-		importer: () => import("./market--cMm4usW.mjs")
+		importer: () => import("./market-CTc_EJR3.mjs")
 	},
 	"fbac33f52a0daa5a2a65572f2d89ee0bcd8d773e8633a0c2922c53cb0bdbdd74": {
 		functionName: "getQuotes_createServerFn_handler",
-		importer: () => import("./market--cMm4usW.mjs")
+		importer: () => import("./market-CTc_EJR3.mjs")
 	}
 };
 async function getServerFnById(id, access) {
@@ -1400,7 +1400,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-CGaGyvmQ.mjs").then((n) => n.t),
+		import("./router-E_2MYFzy.mjs").then((n) => n.t),
 		import("./start-5Z2QO8AU.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);
