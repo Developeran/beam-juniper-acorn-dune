@@ -30,11 +30,13 @@ import {
   DEFAULT_BENCHMARK_INDICATIVE,
   DEFAULT_DEMO_HOLDINGS,
   DEFAULT_GOOGLE_SHEET_URL,
+  DEFAULT_SHEET_WATCHLIST_POINTS,
   cleanGroupName,
   fetchSheetData,
   generateGoogleFinanceTemplateCsv,
   type BenchmarkIndicative,
   type PortfolioHolding,
+  type SheetWatchlistPoint,
 } from "@/lib/google-sheets";
 import { GoogleFinancePortfolioChart } from "@/components/google-finance-portfolio-chart";
 import type { Quote } from "@/lib/market-types";
@@ -147,6 +149,20 @@ export function PortfolioPanel({
   });
 
   const [benchmark, setBenchmark] = useState<BenchmarkIndicative>(DEFAULT_BENCHMARK_INDICATIVE);
+  const [watchlistHistory, setWatchlistHistory] = useState<SheetWatchlistPoint[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("grok_monitor_watchlist_history_v1");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        } catch {
+          // ignore
+        }
+      }
+    }
+    return DEFAULT_SHEET_WATCHLIST_POINTS;
+  });
   const [sheetUrl, setSheetUrl] = useState(DEFAULT_GOOGLE_SHEET_URL);
   const [isSyncing, setIsSyncing] = useState(false);
   const [isCopiedTemplate, setIsCopiedTemplate] = useState(false);
@@ -269,7 +285,15 @@ export function PortfolioPanel({
       }
 
       saveHoldings(res.holdings, res.benchmark);
-      toast.success(`Успешно загружено ${res.holdings.length} позиций из Google Таблицы!`);
+      if (res.watchlistHistory && res.watchlistHistory.length > 0) {
+        setWatchlistHistory(res.watchlistHistory);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("grok_monitor_watchlist_history_v1", JSON.stringify(res.watchlistHistory));
+        }
+      }
+      toast.success(
+        `Синхронизировано: ${res.holdings.length} активов из «Лист1» + ${res.watchlistHistory?.length || 0} дней динамики из вкладки «Watchlist»!`
+      );
     } catch (err) {
       toast.error(`Ошибка синхронизации: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
@@ -418,6 +442,7 @@ export function PortfolioPanel({
         formationDate={selectedGroup === "all" ? undefined : "16.06"}
         benchmarkReturnPct={benchmark.pnlPct}
         holdings={displayedHoldings}
+        watchlistHistory={watchlistHistory}
       />
 
       {/* 3. SYNC TOOLBAR & ADD POSITION (Collapsible / Compact) */}

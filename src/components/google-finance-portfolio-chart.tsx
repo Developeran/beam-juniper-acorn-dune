@@ -7,6 +7,10 @@ import {
   Layers,
   GitCompare,
   Loader2,
+  FileSpreadsheet,
+  Activity,
+  Calendar,
+  Sparkles,
 } from "lucide-react";
 import { formatNumber, formatPercent } from "@/lib/format";
 import {
@@ -14,7 +18,11 @@ import {
   type PortfolioChartPoint,
 } from "@/lib/market";
 import type { RangeId } from "@/lib/market-types";
-import type { PortfolioHolding } from "@/lib/google-sheets";
+import {
+  DEFAULT_SHEET_WATCHLIST_POINTS,
+  type PortfolioHolding,
+  type SheetWatchlistPoint,
+} from "@/lib/google-sheets";
 import { cn } from "@/lib/utils";
 
 const RANGES: { id: RangeId; label: string; periodLabel: string }[] = [
@@ -61,6 +69,22 @@ function formatTooltipDate(t: number, range: RangeId): string {
   });
 }
 
+function formatSheetDateLabel(dateStr: string): string {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+}
+
+function formatSheetDateFull(dateStr: string): string {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 export function GoogleFinancePortfolioChart({
   portfolioName,
   totalValue,
@@ -68,6 +92,7 @@ export function GoogleFinancePortfolioChart({
   formationDate,
   benchmarkReturnPct = 0.92,
   holdings = [],
+  watchlistHistory = DEFAULT_SHEET_WATCHLIST_POINTS,
 }: {
   portfolioName: string;
   totalValue: number;
@@ -75,9 +100,11 @@ export function GoogleFinancePortfolioChart({
   formationDate?: string;
   benchmarkReturnPct?: number;
   holdings?: PortfolioHolding[];
+  watchlistHistory?: SheetWatchlistPoint[];
 }) {
+  const [dataMode, setDataMode] = useState<"watchlist_sheet" | "live">("watchlist_sheet");
   const [selectedRange, setSelectedRange] = useState<RangeId>("1y");
-  const [compareBenchmark, setCompareBenchmark] = useState(false);
+  const [compareBenchmark, setCompareBenchmark] = useState(true);
   const [chartType, setChartType] = useState<"area" | "line">("area");
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
@@ -85,7 +112,7 @@ export function GoogleFinancePortfolioChart({
 
   const isAllAssets = portfolioName.toLowerCase().includes("все активы");
 
-  // Prepare input maps for real query with stable symbolsKey
+  // Prepare input maps for real query with stable symbolsKey (Live Yahoo Finance)
   const queryPayload = useMemo(() => {
     const symbols = Array.from(new Set(holdings.map((h) => h.symbol).filter(Boolean))).sort();
     const sharesMap: Record<string, number> = {};
@@ -105,7 +132,7 @@ export function GoogleFinancePortfolioChart({
   }, [holdings]);
 
   // Query real portfolio historical data from Yahoo Finance
-  const { data: chartData, isLoading, isFetching } = useQuery({
+  const { data: chartData, isFetching } = useQuery({
     queryKey: ["portfolio-chart", queryPayload.symbolsKey, selectedRange, compareBenchmark],
     queryFn: () =>
       getPortfolioHistoricalChart({
@@ -117,73 +144,124 @@ export function GoogleFinancePortfolioChart({
           includeBenchmark: compareBenchmark,
         },
       }),
-    enabled: queryPayload.symbols.length > 0,
+    enabled: queryPayload.symbols.length > 0 && dataMode === "live",
     staleTime: 60_000,
     placeholderData: keepPreviousData,
   });
 
   // Effective points from real API
-  const points: PortfolioChartPoint[] = useMemo(() => {
+  const livePoints: PortfolioChartPoint[] = useMemo(() => {
     if (chartData?.points && chartData.points.length >= 2) {
       return chartData.points;
     }
     return [];
   }, [chartData]);
 
-  // Chart coordinate math
+  // Sheet Watchlist points
+  const sheetPoints = useMemo(() => {
+    return watchlistHistory && watchlistHistory.length > 0
+      ? watchlistHistory
+      : DEFAULT_SHEET_WATCHLIST_POINTS;
+  }, [watchlistHistory]);
+
+  // Chart coordinate math constants
   const VB = { w: 900, h: 320 };
   const PAD = { l: 20, r: 25, t: 25, b: 35 };
-
-  const values = points.map((p) => p.value);
-  if (compareBenchmark) {
-    points.forEach((p) => {
-      if (p.benchmarkValue) values.push(p.benchmarkValue);
-    });
-  }
-
-  const minVal = Math.min(...values) * 0.98;
-  const maxVal = Math.max(...values) * 1.02;
-  const valSpan = maxVal - minVal || 1;
-
   const innerW = VB.w - PAD.l - PAD.r;
   const innerH = VB.h - PAD.t - PAD.b;
 
-  const xOf = (idx: number) => PAD.l + (idx / (points.length - 1 || 1)) * innerW;
-  const yOf = (val: number) => PAD.t + ((maxVal - val) / valSpan) * innerH;
+  // Coordinate mapping for WATCHLIST SHEET mode
+  const sheetValues = useMemo(() => {
+    return sheetPoints.flatMap((p) => [p.mainPortfolio, p.modelPortfolio, p.benchmark]);
+  }, [sheetPoints]);
 
-  // Main line path
-  const linePath = useMemo(() => {
-    if (points.length < 2) return "";
-    return points
-      .map((p, i) => `${i === 0 ? "M" : "L"} ${xOf(i).toFixed(1)} ${yOf(p.value).toFixed(1)}`)
+  const minSheetVal = Math.min(...sheetValues) * 0.98;
+  const maxSheetVal = Math.max(...sheetValues) * 1.02;
+  const sheetValSpan = maxSheetVal - minSheetVal || 1;
+
+  const xSheet = (idx: number) => PAD.l + (idx / (sheetPoints.length - 1 || 1)) * innerW;
+  const ySheet = (val: number) => PAD.t + ((maxSheetVal - val) / sheetValSpan) * innerH;
+
+  const sheetMainLine = useMemo(() => {
+    if (sheetPoints.length < 2) return "";
+    return sheetPoints
+      .map((p, i) => `${i === 0 ? "M" : "L"} ${xSheet(i).toFixed(1)} ${ySheet(p.mainPortfolio).toFixed(1)}`)
       .join(" ");
-  }, [points, minVal, maxVal]);
+  }, [sheetPoints, minSheetVal, maxSheetVal]);
 
-  // Area fill path
-  const areaPath = useMemo(() => {
-    if (!linePath || points.length < 2) return "";
-    const lastX = xOf(points.length - 1).toFixed(1);
-    const firstX = xOf(0).toFixed(1);
+  const sheetModelLine = useMemo(() => {
+    if (sheetPoints.length < 2) return "";
+    return sheetPoints
+      .map((p, i) => `${i === 0 ? "M" : "L"} ${xSheet(i).toFixed(1)} ${ySheet(p.modelPortfolio).toFixed(1)}`)
+      .join(" ");
+  }, [sheetPoints, minSheetVal, maxSheetVal]);
+
+  const sheetBenchLine = useMemo(() => {
+    if (sheetPoints.length < 2) return "";
+    return sheetPoints
+      .map((p, i) => `${i === 0 ? "M" : "L"} ${xSheet(i).toFixed(1)} ${ySheet(p.benchmark).toFixed(1)}`)
+      .join(" ");
+  }, [sheetPoints, minSheetVal, maxSheetVal]);
+
+  const sheetMainArea = useMemo(() => {
+    if (!sheetMainLine || sheetPoints.length < 2) return "";
+    const lastX = xSheet(sheetPoints.length - 1).toFixed(1);
+    const firstX = xSheet(0).toFixed(1);
     const bottomY = (PAD.t + innerH).toFixed(1);
-    return `${linePath} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
-  }, [linePath, points]);
+    return `${sheetMainLine} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
+  }, [sheetMainLine, sheetPoints]);
 
-  // Benchmark comparison line
-  const benchmarkLinePath = useMemo(() => {
-    if (!compareBenchmark || points.length < 2) return "";
-    return points
+  // Coordinate mapping for LIVE YAHOO mode
+  const liveValues = useMemo(() => {
+    const vals = livePoints.map((p) => p.value);
+    if (compareBenchmark) {
+      livePoints.forEach((p) => {
+        if (p.benchmarkValue) vals.push(p.benchmarkValue);
+      });
+    }
+    return vals;
+  }, [livePoints, compareBenchmark]);
+
+  const minLiveVal = Math.min(...(liveValues.length ? liveValues : [1])) * 0.98;
+  const maxLiveVal = Math.max(...(liveValues.length ? liveValues : [1])) * 1.02;
+  const liveValSpan = maxLiveVal - minLiveVal || 1;
+
+  const xLive = (idx: number) => PAD.l + (idx / (livePoints.length - 1 || 1)) * innerW;
+  const yLive = (val: number) => PAD.t + ((maxLiveVal - val) / liveValSpan) * innerH;
+
+  const liveMainLine = useMemo(() => {
+    if (livePoints.length < 2) return "";
+    return livePoints
+      .map((p, i) => `${i === 0 ? "M" : "L"} ${xLive(i).toFixed(1)} ${yLive(p.value).toFixed(1)}`)
+      .join(" ");
+  }, [livePoints, minLiveVal, maxLiveVal]);
+
+  const liveAreaPath = useMemo(() => {
+    if (!liveMainLine || livePoints.length < 2) return "";
+    const lastX = xLive(livePoints.length - 1).toFixed(1);
+    const firstX = xLive(0).toFixed(1);
+    const bottomY = (PAD.t + innerH).toFixed(1);
+    return `${liveMainLine} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
+  }, [liveMainLine, livePoints]);
+
+  const liveBenchLine = useMemo(() => {
+    if (!compareBenchmark || livePoints.length < 2) return "";
+    return livePoints
       .map((p, i) => {
         const val = p.benchmarkValue ?? p.value;
-        return `${i === 0 ? "M" : "L"} ${xOf(i).toFixed(1)} ${yOf(val).toFixed(1)}`;
+        return `${i === 0 ? "M" : "L"} ${xLive(i).toFixed(1)} ${yLive(val).toFixed(1)}`;
       })
       .join(" ");
-  }, [points, compareBenchmark, minVal, maxVal]);
+  }, [livePoints, compareBenchmark, minLiveVal, maxLiveVal]);
 
   // Active hover tracking
+  const currentCount = dataMode === "watchlist_sheet" ? sheetPoints.length : livePoints.length;
+
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (currentCount < 2) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    const idx = Math.round(ratio * (points.length - 1));
+    const idx = Math.round(ratio * (currentCount - 1));
     setHoverIndex(idx);
   };
 
@@ -191,29 +269,38 @@ export function GoogleFinancePortfolioChart({
     setHoverIndex(null);
   };
 
-  const activePoint = hoverIndex !== null ? points[hoverIndex] : points[points.length - 1];
-  const activeValue = activePoint ? activePoint.value : totalValue;
+  // Active point calculations
+  const activeSheetPoint =
+    hoverIndex !== null && hoverIndex < sheetPoints.length
+      ? sheetPoints[hoverIndex]!
+      : sheetPoints[sheetPoints.length - 1]!;
 
-  // Dynamic returns for the selected range
-  const rangeStartVal = chartData?.startValue || points[0]?.value || totalCost;
-  const rangeChange = activeValue - rangeStartVal;
-  const rangeChangePct = rangeStartVal > 0 ? (rangeChange / rangeStartVal) * 100 : 0;
-  const isUp = rangeChange >= 0;
+  const activeLivePoint =
+    hoverIndex !== null && hoverIndex < livePoints.length
+      ? livePoints[hoverIndex]!
+      : livePoints[livePoints.length - 1];
 
-  const formattedActiveDate = useMemo(() => {
-    if (!activePoint?.t) return "11 сент., 18:00 UTC";
-    return formatTooltipDate(activePoint.t, selectedRange);
-  }, [activePoint, selectedRange]);
+  const activeLiveValue = activeLivePoint ? activeLivePoint.value : totalValue;
+  const rangeStartVal = chartData?.startValue || livePoints[0]?.value || totalCost;
+  const liveRangeChange = activeLiveValue - rangeStartVal;
+  const liveRangeChangePct = rangeStartVal > 0 ? (liveRangeChange / rangeStartVal) * 100 : 0;
+  const liveIsUp = liveRangeChange >= 0;
+
+  // Sheet calculation
+  const sheetMainChange = activeSheetPoint.mainPortfolio - 100;
+  const sheetMainChangePct = sheetMainChange;
+  const sheetIsUp = sheetMainChangePct >= 0;
+  const sheetAlpha = activeSheetPoint.modelPortfolio - activeSheetPoint.mainPortfolio;
 
   return (
     <div
       ref={containerRef}
       className="rounded-2xl border border-border/80 bg-surface p-5 sm:p-7 shadow-sm transition-all"
     >
-      {/* 1. Header matching Google Finance screenshot */}
+      {/* 1. Header with Breadcrumbs & Data Source Indicator */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between text-xs text-muted">
-          <div className="flex items-center gap-1.5 font-medium">
+          <div className="flex items-center gap-1.5 font-medium flex-wrap">
             <span>Главная</span>
             <span>/</span>
             <span className="text-fg font-semibold">{portfolioName}</span>
@@ -224,99 +311,200 @@ export function GoogleFinancePortfolioChart({
             )}
           </div>
           <div className="flex items-center gap-2">
-            {isFetching ? (
+            {dataMode === "watchlist_sheet" ? (
+              <span className="flex items-center gap-1.5 text-[11px] font-medium text-[#0F9D58] bg-[#0F9D58]/10 px-2.5 py-1 rounded-full border border-[#0F9D58]/20">
+                <FileSpreadsheet className="size-3.5" />
+                Вкладка «Watchlist» (Google Таблица)
+              </span>
+            ) : isFetching ? (
               <span className="flex items-center gap-1 text-[11px] text-accent">
                 <Loader2 className="size-3 animate-spin" />
-                Обновление котировок...
+                Обновление Yahoo котировок...
               </span>
             ) : (
               <span className="flex items-center gap-1.5 text-[11px] text-muted">
                 <span className="size-2 rounded-full bg-up animate-pulse" />
-                Google Finance Live
+                Google Finance / Yahoo Live
               </span>
             )}
           </div>
         </div>
 
-        {/* Portfolio Title */}
-        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-fg">
-          {portfolioName}
-        </h2>
-
-        {/* Big Bold Portfolio Valuation + Colored Range Return Badge */}
-        <div className="flex flex-wrap items-baseline gap-3 pt-1">
-          <span className="text-3xl sm:text-4xl font-bold font-mono tracking-tight text-fg">
-            ${formatNumber(activeValue, 2)}
-          </span>
-
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 text-sm sm:text-base font-bold font-mono px-2.5 py-0.5 rounded-md transition-colors",
-              isUp ? "bg-up-soft text-up" : "bg-down-soft text-down",
-            )}
-          >
-            {isUp ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
-            {isUp ? "+" : "−"}{Math.abs(rangeChangePct).toFixed(2)}% (
-            {isUp ? "+" : "−"}${formatNumber(Math.abs(rangeChange), 0)}) {selectedRange.toUpperCase()}
+        {/* Portfolio Title & Mode Subtitle */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-fg">
+            {dataMode === "watchlist_sheet"
+              ? "Сравнительная динамика (вкладка «Watchlist»)"
+              : portfolioName}
+          </h2>
+          <span className="text-xs text-muted">
+            {dataMode === "watchlist_sheet"
+              ? "Период: 16.06.2026 – 16.07.2026 · База = 100.00"
+              : `Вложено: $${formatNumber(totalCost, 0)}`}
           </span>
         </div>
 
-        <div className="text-xs text-muted">
-          {formattedActiveDate} · USD ·{" "}
-          <span className="text-fg font-medium">Вложено: ${formatNumber(totalCost, 0)}</span>
-        </div>
-      </div>
+        {/* Valuation & Return Metrics */}
+        {dataMode === "watchlist_sheet" ? (
+          <div className="flex flex-col gap-2 pt-1">
+            <div className="flex flex-wrap items-baseline gap-3">
+              <span className="text-3xl sm:text-4xl font-bold font-mono tracking-tight text-fg">
+                {activeSheetPoint.mainPortfolio.toFixed(2)}
+              </span>
+              <span className="text-sm font-medium text-muted font-mono">
+                (база 100.00 на 16.06)
+              </span>
 
-      {/* 2. Controls Toolbar (Area chart, Compare with ACWI) */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-y border-border/60 py-2.5">
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Chart type toggle */}
-          <button
-            type="button"
-            onClick={() => setChartType(chartType === "area" ? "line" : "area")}
-            className="flex items-center gap-1.5 rounded-lg border border-border bg-bg/60 px-3 py-1.5 text-xs font-medium text-fg hover:bg-bg transition-colors"
-          >
-            <Layers className="size-3.5 text-[#1a73e8]" />
-            <span>{chartType === "area" ? "Диаграмма с областями" : "Линейный график"}</span>
-            <ChevronDown className="size-3 text-muted" />
-          </button>
-
-          {/* Compare with Benchmark */}
-          <button
-            type="button"
-            onClick={() => setCompareBenchmark(!compareBenchmark)}
-            className={cn(
-              "flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer",
-              compareBenchmark
-                ? "border-amber-500/60 bg-amber-500/10 text-amber-700 dark:text-amber-300 font-semibold"
-                : "border-border bg-bg/60 text-muted hover:text-fg hover:bg-bg",
-            )}
-          >
-            <GitCompare className="size-3.5" />
-            <span>Сравнить с ACWI</span>
-            <span className="text-[10px] opacity-75 font-mono">
-              ({benchmarkReturnPct > 0 ? "+" : ""}{benchmarkReturnPct}%)
-            </span>
-          </button>
-        </div>
-
-        {compareBenchmark && (
-          <div className="flex items-center gap-3 text-xs text-muted">
-            <div className="flex items-center gap-1">
-              <span className="h-0.5 w-3 bg-[#1a73e8]" />
-              <span className="font-medium text-fg">{portfolioName}</span>
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 text-sm sm:text-base font-bold font-mono px-2.5 py-0.5 rounded-md transition-colors",
+                  sheetIsUp ? "bg-up-soft text-up" : "bg-down-soft text-down",
+                )}
+              >
+                {sheetIsUp ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
+                {sheetIsUp ? "+" : "−"}{Math.abs(sheetMainChangePct).toFixed(2)}% (Основной)
+              </span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="h-0.5 w-3 bg-[#f59e0b] stroke-dasharray" />
-              <span>Бенчмарк ACWI (+{benchmarkReturnPct}%)</span>
+
+            {/* Interactive Comparative Pill Badges */}
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[#1a73e8]/30 bg-[#1a73e8]/10 px-2.5 py-1 text-[#1a73e8] font-medium">
+                <span className="size-2 rounded-full bg-[#1a73e8]" />
+                Основной портфель:{" "}
+                <strong className="font-mono">{activeSheetPoint.mainPortfolio.toFixed(2)}</strong> (
+                {activeSheetPoint.mainPortfolio >= 100 ? "+" : ""}
+                {(activeSheetPoint.mainPortfolio - 100).toFixed(2)}%)
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[#34a853]/30 bg-[#34a853]/10 px-2.5 py-1 text-[#34a853] font-medium">
+                <span className="size-2 rounded-full bg-[#34a853]" />
+                Модельный портфель:{" "}
+                <strong className="font-mono">{activeSheetPoint.modelPortfolio.toFixed(2)}</strong> (
+                {activeSheetPoint.modelPortfolio >= 100 ? "+" : ""}
+                {(activeSheetPoint.modelPortfolio - 100).toFixed(2)}%)
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-amber-700 dark:text-amber-300 font-medium">
+                <span className="size-2 rounded-full bg-amber-500" />
+                Бенчмарк MSCI ACWI:{" "}
+                <strong className="font-mono">{activeSheetPoint.benchmark.toFixed(2)}</strong> (
+                {activeSheetPoint.benchmark >= 100 ? "+" : ""}
+                {(activeSheetPoint.benchmark - 100).toFixed(2)}%)
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 text-purple-700 dark:text-purple-300 font-medium">
+                <Sparkles className="size-3" />
+                Альфа (Модельный vs Основной):{" "}
+                <strong className="font-mono">
+                  {sheetAlpha >= 0 ? "+" : ""}
+                  {sheetAlpha.toFixed(2)}%
+                </strong>
+              </span>
+            </div>
+
+            <div className="text-xs text-muted pt-0.5">
+              {formatSheetDateFull(activeSheetPoint.date)} · Исторические данные из вашей Google
+              Таблицы
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-1 pt-1">
+            <div className="flex flex-wrap items-baseline gap-3">
+              <span className="text-3xl sm:text-4xl font-bold font-mono tracking-tight text-fg">
+                ${formatNumber(activeLiveValue, 2)}
+              </span>
+
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 text-sm sm:text-base font-bold font-mono px-2.5 py-0.5 rounded-md transition-colors",
+                  liveIsUp ? "bg-up-soft text-up" : "bg-down-soft text-down",
+                )}
+              >
+                {liveIsUp ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
+                {liveIsUp ? "+" : "−"}{Math.abs(liveRangeChangePct).toFixed(2)}% (
+                {liveIsUp ? "+" : "−"}${formatNumber(Math.abs(liveRangeChange), 0)}){" "}
+                {selectedRange.toUpperCase()}
+              </span>
+            </div>
+            <div className="text-xs text-muted">
+              {activeLivePoint?.t ? formatTooltipDate(activeLivePoint.t, selectedRange) : "Сегодня"} · USD
             </div>
           </div>
         )}
       </div>
 
-      {/* 3. SVG Area Vector Chart */}
+      {/* 2. Controls Toolbar: Switcher (Watchlist Sheet vs Live Yahoo) + Chart Type */}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-y border-border/60 py-3">
+        {/* DATA SOURCE TOGGLE (Primary Google Sheet Watchlist vs Live Yahoo) */}
+        <div className="flex items-center rounded-xl bg-bg/80 p-1 border border-border">
+          <button
+            type="button"
+            onClick={() => setDataMode("watchlist_sheet")}
+            className={cn(
+              "flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer",
+              dataMode === "watchlist_sheet"
+                ? "bg-surface text-[#0F9D58] shadow-xs border border-border"
+                : "text-muted hover:text-fg",
+            )}
+          >
+            <FileSpreadsheet className="size-3.5" />
+            <span>📊 Watchlist из таблицы (16.06 – 16.07)</span>
+            <span className="rounded-full bg-[#0F9D58]/15 px-1.5 py-0.2 text-[10px] font-mono text-[#0F9D58]">
+              {sheetPoints.length} дн.
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setDataMode("live")}
+            className={cn(
+              "flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer",
+              dataMode === "live"
+                ? "bg-surface text-[#1a73e8] shadow-xs border border-border"
+                : "text-muted hover:text-fg",
+            )}
+          >
+            <Activity className="size-3.5" />
+            <span>📈 Live котировки (Yahoo)</span>
+          </button>
+        </div>
+
+        {/* Secondary options: Area vs Line, Benchmark toggle in Live */}
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setChartType(chartType === "area" ? "line" : "area")}
+            className="flex items-center gap-1.5 rounded-lg border border-border bg-bg/60 px-3 py-1.5 text-xs font-medium text-fg hover:bg-bg transition-colors cursor-pointer"
+          >
+            <Layers className="size-3.5 text-[#1a73e8]" />
+            <span>{chartType === "area" ? "С областями" : "Линейный"}</span>
+            <ChevronDown className="size-3 text-muted" />
+          </button>
+
+          {dataMode === "live" && (
+            <button
+              type="button"
+              onClick={() => setCompareBenchmark(!compareBenchmark)}
+              className={cn(
+                "flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer",
+                compareBenchmark
+                  ? "border-amber-500/60 bg-amber-500/10 text-amber-700 dark:text-amber-300 font-semibold"
+                  : "border-border bg-bg/60 text-muted hover:text-fg hover:bg-bg",
+              )}
+            >
+              <GitCompare className="size-3.5" />
+              <span>Сравнить с ACWI</span>
+              <span className="text-[10px] opacity-75 font-mono">
+                ({benchmarkReturnPct > 0 ? "+" : ""}{benchmarkReturnPct}%)
+              </span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* 3. SVG Multi-Series Vector Chart */}
       <div className="relative mt-4 h-64 sm:h-72 w-full">
-        {points.length < 2 ? (
+        {dataMode === "live" && livePoints.length < 2 ? (
           <div className="flex size-full flex-col items-center justify-center rounded-xl bg-bg/40 text-muted border border-border/50">
             <Loader2 className="size-6 animate-spin text-[#1a73e8] mb-2" />
             <span className="text-xs font-medium text-fg">
@@ -341,6 +529,13 @@ export function GoogleFinancePortfolioChart({
                 <stop offset="70%" stopColor="#1a73e8" stopOpacity="0.04" />
                 <stop offset="100%" stopColor="#1a73e8" stopOpacity="0.00" />
               </linearGradient>
+
+              {/* Watchlist Green Area Gradient */}
+              <linearGradient id="gfModelGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#34a853" stopOpacity="0.20" />
+                <stop offset="70%" stopColor="#34a853" stopOpacity="0.03" />
+                <stop offset="100%" stopColor="#34a853" stopOpacity="0.00" />
+              </linearGradient>
             </defs>
 
             {/* Vertical Guide Lines */}
@@ -361,136 +556,349 @@ export function GoogleFinancePortfolioChart({
               );
             })}
 
-            {/* Area Fill */}
-            {chartType === "area" && areaPath && (
-              <path d={areaPath} fill="url(#gfAreaGradient)" />
-            )}
-
-            {/* Benchmark Line (ACWI) */}
-            {compareBenchmark && benchmarkLinePath && (
-              <path
-                d={benchmarkLinePath}
-                fill="none"
-                stroke="#f59e0b"
-                strokeWidth="2"
-                strokeDasharray="4 3"
-                opacity="0.85"
-              />
-            )}
-
-            {/* Main Portfolio Curve */}
-            {linePath && (
-              <path
-                d={linePath}
-                fill="none"
-                stroke="#1a73e8"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            )}
-
-            {/* Current Rightmost Active Dot */}
-            {points.length > 0 && hoverIndex === null && (
-              <circle
-                cx={xOf(points.length - 1)}
-                cy={yOf(points[points.length - 1]!.value)}
-                r="4.5"
-                fill="#1a73e8"
-                stroke="#ffffff"
-                strokeWidth="1.5"
-              />
-            )}
-
-            {/* Crosshair Cursor on Hover */}
-            {hoverIndex !== null && (
-              <g>
+            {/* --- WATCHLIST SHEET MODE RENDERING --- */}
+            {dataMode === "watchlist_sheet" && (
+              <>
+                {/* 100.0 Baseline Horizon */}
                 <line
-                  x1={xOf(hoverIndex)}
-                  y1={PAD.t}
-                  x2={xOf(hoverIndex)}
-                  y2={PAD.t + innerH}
-                  stroke="#1a73e8"
+                  x1={PAD.l}
+                  y1={ySheet(100)}
+                  x2={PAD.l + innerW}
+                  y2={ySheet(100)}
+                  stroke="#94a3b8"
                   strokeWidth="1"
                   strokeDasharray="3 3"
+                  opacity="0.5"
                 />
-                <circle
-                  cx={xOf(hoverIndex)}
-                  cy={yOf(points[hoverIndex]!.value)}
-                  r="5"
-                  fill="#1a73e8"
-                  stroke="#ffffff"
-                  strokeWidth="2"
-                />
-              </g>
+
+                {/* Area Fill for Main Portfolio */}
+                {chartType === "area" && sheetMainArea && (
+                  <path d={sheetMainArea} fill="url(#gfAreaGradient)" />
+                )}
+
+                {/* Benchmark Curve (MSCI ACWI) - Dashed Amber */}
+                {sheetBenchLine && (
+                  <path
+                    d={sheetBenchLine}
+                    fill="none"
+                    stroke="#f59e0b"
+                    strokeWidth="1.8"
+                    strokeDasharray="4 3"
+                    opacity="0.9"
+                  />
+                )}
+
+                {/* Model Portfolio Curve - Green */}
+                {sheetModelLine && (
+                  <path
+                    d={sheetModelLine}
+                    fill="none"
+                    stroke="#34a853"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )}
+
+                {/* Main Portfolio Curve - Blue */}
+                {sheetMainLine && (
+                  <path
+                    d={sheetMainLine}
+                    fill="none"
+                    stroke="#1a73e8"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )}
+
+                {/* Static End Dots when not hovering */}
+                {hoverIndex === null && (
+                  <>
+                    <circle
+                      cx={xSheet(sheetPoints.length - 1)}
+                      cy={ySheet(sheetPoints[sheetPoints.length - 1]!.mainPortfolio)}
+                      r="4.5"
+                      fill="#1a73e8"
+                      stroke="#ffffff"
+                      strokeWidth="1.5"
+                    />
+                    <circle
+                      cx={xSheet(sheetPoints.length - 1)}
+                      cy={ySheet(sheetPoints[sheetPoints.length - 1]!.modelPortfolio)}
+                      r="4.5"
+                      fill="#34a853"
+                      stroke="#ffffff"
+                      strokeWidth="1.5"
+                    />
+                    <circle
+                      cx={xSheet(sheetPoints.length - 1)}
+                      cy={ySheet(sheetPoints[sheetPoints.length - 1]!.benchmark)}
+                      r="4"
+                      fill="#f59e0b"
+                      stroke="#ffffff"
+                      strokeWidth="1.5"
+                    />
+                  </>
+                )}
+
+                {/* Crosshair Cursor on Hover */}
+                {hoverIndex !== null && hoverIndex < sheetPoints.length && (
+                  <g>
+                    <line
+                      x1={xSheet(hoverIndex)}
+                      y1={PAD.t}
+                      x2={xSheet(hoverIndex)}
+                      y2={PAD.t + innerH}
+                      stroke="#1a73e8"
+                      strokeWidth="1"
+                      strokeDasharray="3 3"
+                    />
+                    {/* Dots on all 3 curves */}
+                    <circle
+                      cx={xSheet(hoverIndex)}
+                      cy={ySheet(sheetPoints[hoverIndex]!.mainPortfolio)}
+                      r="5"
+                      fill="#1a73e8"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                    />
+                    <circle
+                      cx={xSheet(hoverIndex)}
+                      cy={ySheet(sheetPoints[hoverIndex]!.modelPortfolio)}
+                      r="5"
+                      fill="#34a853"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                    />
+                    <circle
+                      cx={xSheet(hoverIndex)}
+                      cy={ySheet(sheetPoints[hoverIndex]!.benchmark)}
+                      r="4.5"
+                      fill="#f59e0b"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                    />
+                  </g>
+                )}
+
+                {/* X-Axis Date Labels for Watchlist */}
+                {[0, 0.25, 0.5, 0.75, 1].map((f, i) => {
+                  const idx = Math.round(f * (sheetPoints.length - 1));
+                  const p = sheetPoints[idx];
+                  if (!p?.date) return null;
+                  const label = formatSheetDateLabel(p.date);
+                  return (
+                    <text
+                      key={i}
+                      x={xSheet(idx)}
+                      y={PAD.t + innerH + 18}
+                      textAnchor={i === 0 ? "start" : i === 4 ? "end" : "middle"}
+                      fontSize="11"
+                      fill="#8f8e86"
+                      fontFamily="sans-serif"
+                    >
+                      {label}
+                    </text>
+                  );
+                })}
+              </>
             )}
 
-            {/* X Axis Date Labels */}
-            {[0, 0.25, 0.5, 0.75, 1].map((f, i) => {
-              const idx = Math.round(f * (points.length - 1));
-              const p = points[idx];
-              if (!p?.t) return null;
-              const label = formatXAxisLabel(p.t, selectedRange);
-              return (
-                <text
-                  key={i}
-                  x={xOf(idx)}
-                  y={PAD.t + innerH + 18}
-                  textAnchor={i === 0 ? "start" : i === 4 ? "end" : "middle"}
-                  fontSize="11"
-                  fill="#8f8e86"
-                  fontFamily="sans-serif"
-                >
-                  {label}
-                </text>
-              );
-            })}
+            {/* --- LIVE YAHOO MODE RENDERING --- */}
+            {dataMode === "live" && (
+              <>
+                {chartType === "area" && liveAreaPath && (
+                  <path d={liveAreaPath} fill="url(#gfAreaGradient)" />
+                )}
+
+                {compareBenchmark && liveBenchLine && (
+                  <path
+                    d={liveBenchLine}
+                    fill="none"
+                    stroke="#f59e0b"
+                    strokeWidth="2"
+                    strokeDasharray="4 3"
+                    opacity="0.85"
+                  />
+                )}
+
+                {liveMainLine && (
+                  <path
+                    d={liveMainLine}
+                    fill="none"
+                    stroke="#1a73e8"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )}
+
+                {livePoints.length > 0 && hoverIndex === null && (
+                  <circle
+                    cx={xLive(livePoints.length - 1)}
+                    cy={yLive(livePoints[livePoints.length - 1]!.value)}
+                    r="4.5"
+                    fill="#1a73e8"
+                    stroke="#ffffff"
+                    strokeWidth="1.5"
+                  />
+                )}
+
+                {hoverIndex !== null && hoverIndex < livePoints.length && (
+                  <g>
+                    <line
+                      x1={xLive(hoverIndex)}
+                      y1={PAD.t}
+                      x2={xLive(hoverIndex)}
+                      y2={PAD.t + innerH}
+                      stroke="#1a73e8"
+                      strokeWidth="1"
+                      strokeDasharray="3 3"
+                    />
+                    <circle
+                      cx={xLive(hoverIndex)}
+                      cy={yLive(livePoints[hoverIndex]!.value)}
+                      r="5"
+                      fill="#1a73e8"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                    />
+                  </g>
+                )}
+
+                {[0, 0.25, 0.5, 0.75, 1].map((f, i) => {
+                  const idx = Math.round(f * (livePoints.length - 1));
+                  const p = livePoints[idx];
+                  if (!p?.t) return null;
+                  const label = formatXAxisLabel(p.t, selectedRange);
+                  return (
+                    <text
+                      key={i}
+                      x={xLive(idx)}
+                      y={PAD.t + innerH + 18}
+                      textAnchor={i === 0 ? "start" : i === 4 ? "end" : "middle"}
+                      fontSize="11"
+                      fill="#8f8e86"
+                      fontFamily="sans-serif"
+                    >
+                      {label}
+                    </text>
+                  );
+                })}
+              </>
+            )}
           </svg>
         )}
 
-        {/* Hover Tooltip Card */}
-        {hoverIndex !== null && activePoint && (
+        {/* Hover Tooltip Card (Watchlist Sheet Mode) */}
+        {dataMode === "watchlist_sheet" && hoverIndex !== null && activeSheetPoint && (
           <div
-            className="pointer-events-none absolute -top-4 rounded-lg border border-border bg-surface/95 px-3 py-1.5 shadow-md backdrop-blur-sm transition-all"
+            className="pointer-events-none absolute -top-8 rounded-xl border border-border bg-surface/95 p-2.5 shadow-lg backdrop-blur-md transition-all z-20 min-w-[200px]"
             style={{
-              left: `${Math.max(10, Math.min(85, (hoverIndex / (points.length - 1)) * 100))}%`,
+              left: `${Math.max(12, Math.min(82, (hoverIndex / (sheetPoints.length - 1)) * 100))}%`,
               transform: "translateX(-50%)",
             }}
           >
-            <div className="text-[11px] text-muted">{formattedActiveDate}</div>
-            <div className="font-mono text-xs font-bold text-fg">
-              ${formatNumber(activePoint.value, 2)}
+            <div className="text-[11px] font-semibold text-fg border-b border-border/60 pb-1 mb-1.5 flex items-center gap-1.5">
+              <Calendar className="size-3 text-muted" />
+              {formatSheetDateFull(activeSheetPoint.date)}
             </div>
-            {activePoint.benchmarkValue && (
+            <div className="space-y-1 text-xs font-mono">
+              <div className="flex items-center justify-between gap-3 text-[#1a73e8]">
+                <span>Основной:</span>
+                <strong>
+                  {activeSheetPoint.mainPortfolio.toFixed(2)} (
+                  {activeSheetPoint.mainPortfolio >= 100 ? "+" : ""}
+                  {(activeSheetPoint.mainPortfolio - 100).toFixed(2)}%)
+                </strong>
+              </div>
+              <div className="flex items-center justify-between gap-3 text-[#34a853]">
+                <span>Модельный:</span>
+                <strong>
+                  {activeSheetPoint.modelPortfolio.toFixed(2)} (
+                  {activeSheetPoint.modelPortfolio >= 100 ? "+" : ""}
+                  {(activeSheetPoint.modelPortfolio - 100).toFixed(2)}%)
+                </strong>
+              </div>
+              <div className="flex items-center justify-between gap-3 text-amber-600 dark:text-amber-400">
+                <span>MSCI ACWI:</span>
+                <strong>
+                  {activeSheetPoint.benchmark.toFixed(2)} (
+                  {activeSheetPoint.benchmark >= 100 ? "+" : ""}
+                  {(activeSheetPoint.benchmark - 100).toFixed(2)}%)
+                </strong>
+              </div>
+              <div className="flex items-center justify-between gap-3 text-purple-600 dark:text-purple-300 pt-1 border-t border-border/40 text-[11px]">
+                <span>Альфа Модель/Осн:</span>
+                <strong>
+                  {sheetAlpha >= 0 ? "+" : ""}
+                  {sheetAlpha.toFixed(2)}%
+                </strong>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Hover Tooltip Card (Live Yahoo Mode) */}
+        {dataMode === "live" && hoverIndex !== null && activeLivePoint && (
+          <div
+            className="pointer-events-none absolute -top-4 rounded-lg border border-border bg-surface/95 px-3 py-1.5 shadow-md backdrop-blur-sm transition-all"
+            style={{
+              left: `${Math.max(10, Math.min(85, (hoverIndex / (livePoints.length - 1)) * 100))}%`,
+              transform: "translateX(-50%)",
+            }}
+          >
+            <div className="text-[11px] text-muted">
+              {activeLivePoint.t ? formatTooltipDate(activeLivePoint.t, selectedRange) : ""}
+            </div>
+            <div className="font-mono text-xs font-bold text-fg">
+              ${formatNumber(activeLivePoint.value, 2)}
+            </div>
+            {activeLivePoint.benchmarkValue && (
               <div className="text-[10px] text-amber-600 font-mono">
-                ACWI: ${formatNumber(activePoint.benchmarkValue, 0)}
+                ACWI: ${formatNumber(activeLivePoint.benchmarkValue, 0)}
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* 4. Google Finance Time Range Pill Bar (Active real timeframe selector) */}
-      <div className="mt-4 flex flex-wrap items-center justify-start gap-1 sm:gap-2 pt-2 border-t border-border/50">
-        {RANGES.map((r) => {
-          const active = selectedRange === r.id;
-          return (
-            <button
-              key={r.id}
-              type="button"
-              onClick={() => setSelectedRange(r.id)}
-              className={cn(
-                "relative flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer",
-                active
-                  ? "bg-[#e8f0fe] text-[#1967d2] font-semibold dark:bg-[#1a73e8]/20 dark:text-[#8ab4f8]"
-                  : "text-muted hover:text-fg hover:bg-bg",
-              )}
-            >
-              <span>{r.label}</span>
-            </button>
-          );
-        })}
-      </div>
+      {/* 4. Bottom Controls */}
+      {dataMode === "live" ? (
+        <div className="mt-4 flex flex-wrap items-center justify-start gap-1 sm:gap-2 pt-2 border-t border-border/50">
+          {RANGES.map((r) => {
+            const active = selectedRange === r.id;
+            return (
+              <button
+                key={r.id}
+                type="button"
+                onClick={() => setSelectedRange(r.id)}
+                className={cn(
+                  "relative flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer",
+                  active
+                    ? "bg-[#e8f0fe] text-[#1967d2] font-semibold dark:bg-[#1a73e8]/20 dark:text-[#8ab4f8]"
+                    : "text-muted hover:text-fg hover:bg-bg",
+                )}
+              >
+                <span>{r.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-border/50 text-xs text-muted">
+          <div className="flex items-center gap-2">
+            <span className="inline-block size-2 rounded-full bg-[#0F9D58]" />
+            <span>
+              Показаны реальные котировки из таблицы <strong>Google Sheets (Watchlist)</strong>
+            </span>
+          </div>
+          <div className="font-mono text-[11px] text-muted">
+            Итог 16.07: Основной 93.21 · Модельный 95.71 · ACWI 99.38
+          </div>
+        </div>
+      )}
     </div>
   );
 }

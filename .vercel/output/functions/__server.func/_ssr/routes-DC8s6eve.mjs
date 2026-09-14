@@ -8,12 +8,12 @@ import { A as ChartColumn, C as Ellipsis, D as Clock, E as Copy, F as Building2,
 import { t as useQuery } from "../_libs/tanstack__react-query.mjs";
 import { i as keepPreviousData } from "../_libs/tanstack__query-core.mjs";
 import { n as toast } from "../_libs/sonner.mjs";
-import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-E_2MYFzy.mjs";
+import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-Bf-GBy1j.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { i as Trigger, n as List$1, r as Root2, t as Content } from "../_libs/radix-ui__react-tabs.mjs";
 import { n as create, t as persist } from "../_libs/zustand.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-BmaJTYfN.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-DC8s6eve.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function cn(...inputs) {
@@ -843,6 +843,155 @@ var DEFAULT_BENCHMARK_INDICATIVE = {
 	pnlUsd: 184314,
 	pnlPct: .92
 };
+var DEFAULT_SHEET_WATCHLIST_POINTS = [
+	{
+		date: "6/16/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-16T12:00:00Z")).getTime(),
+		mainPortfolio: 100,
+		modelPortfolio: 100,
+		benchmark: 100
+	},
+	{
+		date: "6/17/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-17T12:00:00Z")).getTime(),
+		mainPortfolio: 101.29,
+		modelPortfolio: 103.99,
+		benchmark: 99.03
+	},
+	{
+		date: "6/18/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-18T12:00:00Z")).getTime(),
+		mainPortfolio: 105.09,
+		modelPortfolio: 108.31,
+		benchmark: 100.25
+	},
+	{
+		date: "6/19/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-19T12:00:00Z")).getTime(),
+		mainPortfolio: 106.34,
+		modelPortfolio: 105.62,
+		benchmark: 100.16
+	},
+	{
+		date: "6/23/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-23T12:00:00Z")).getTime(),
+		mainPortfolio: 99.51,
+		modelPortfolio: 105.76,
+		benchmark: 98.16
+	},
+	{
+		date: "6/24/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-24T12:00:00Z")).getTime(),
+		mainPortfolio: 99.6,
+		modelPortfolio: 103.38,
+		benchmark: 98.02
+	},
+	{
+		date: "6/25/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-25T12:00:00Z")).getTime(),
+		mainPortfolio: 102.05,
+		modelPortfolio: 103.24,
+		benchmark: 98.32
+	},
+	{
+		date: "6/26/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-26T12:00:00Z")).getTime(),
+		mainPortfolio: 98.66,
+		modelPortfolio: 103.23,
+		benchmark: 98.06
+	},
+	{
+		date: "6/29/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-29T12:00:00Z")).getTime(),
+		mainPortfolio: 102.02,
+		modelPortfolio: 102.25,
+		benchmark: 99.03
+	},
+	{
+		date: "6/30/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-06-30T12:00:00Z")).getTime(),
+		mainPortfolio: 105.43,
+		modelPortfolio: 106.55,
+		benchmark: 99.76
+	},
+	{
+		date: "7/1/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-01T12:00:00Z")).getTime(),
+		mainPortfolio: 99.95,
+		modelPortfolio: 105.42,
+		benchmark: 99.22
+	},
+	{
+		date: "7/2/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-02T12:00:00Z")).getTime(),
+		mainPortfolio: 96.07,
+		modelPortfolio: 102.95,
+		benchmark: 99.24
+	},
+	{
+		date: "7/3/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-03T12:00:00Z")).getTime(),
+		mainPortfolio: 99.19,
+		modelPortfolio: 106.85,
+		benchmark: 100.4
+	},
+	{
+		date: "7/7/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-07T12:00:00Z")).getTime(),
+		mainPortfolio: 95.01,
+		modelPortfolio: 103.43,
+		benchmark: 99.44
+	},
+	{
+		date: "7/8/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-08T12:00:00Z")).getTime(),
+		mainPortfolio: 95.55,
+		modelPortfolio: 101.69,
+		benchmark: 99.08
+	},
+	{
+		date: "7/9/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-09T12:00:00Z")).getTime(),
+		mainPortfolio: 97.93,
+		modelPortfolio: 104.61,
+		benchmark: 99.8
+	},
+	{
+		date: "7/10/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-10T12:00:00Z")).getTime(),
+		mainPortfolio: 96.99,
+		modelPortfolio: 103.86,
+		benchmark: 100.22
+	},
+	{
+		date: "7/13/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-13T12:00:00Z")).getTime(),
+		mainPortfolio: 93.69,
+		modelPortfolio: 100.46,
+		benchmark: 99.11
+	},
+	{
+		date: "7/14/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-14T12:00:00Z")).getTime(),
+		mainPortfolio: 97.3,
+		modelPortfolio: 99.09,
+		benchmark: 99.75
+	},
+	{
+		date: "7/15/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-15T12:00:00Z")).getTime(),
+		mainPortfolio: 96.6,
+		modelPortfolio: 98.79,
+		benchmark: 100.11
+	},
+	{
+		date: "7/16/2026",
+		timestamp: (/* @__PURE__ */ new Date("2026-07-16T12:00:00Z")).getTime(),
+		mainPortfolio: 93.21,
+		modelPortfolio: 95.71,
+		benchmark: 99.38
+	}
+];
 function cleanGroupName(raw) {
 	if (!raw) return "Основной портфель";
 	const trimmed = raw.trim();
@@ -1324,9 +1473,27 @@ function formatTooltipDate(t, range) {
 		year: "numeric"
 	});
 }
-function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, formationDate, benchmarkReturnPct = .92, holdings = [] }) {
+function formatSheetDateLabel(dateStr) {
+	const d = new Date(dateStr);
+	if (isNaN(d.getTime())) return dateStr;
+	return d.toLocaleDateString("ru-RU", {
+		day: "numeric",
+		month: "short"
+	});
+}
+function formatSheetDateFull(dateStr) {
+	const d = new Date(dateStr);
+	if (isNaN(d.getTime())) return dateStr;
+	return d.toLocaleDateString("ru-RU", {
+		day: "numeric",
+		month: "long",
+		year: "numeric"
+	});
+}
+function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, formationDate, benchmarkReturnPct = .92, holdings = [], watchlistHistory = DEFAULT_SHEET_WATCHLIST_POINTS }) {
+	const [dataMode, setDataMode] = (0, import_react.useState)("watchlist_sheet");
 	const [selectedRange, setSelectedRange] = (0, import_react.useState)("1y");
-	const [compareBenchmark, setCompareBenchmark] = (0, import_react.useState)(false);
+	const [compareBenchmark, setCompareBenchmark] = (0, import_react.useState)(true);
 	const [chartType, setChartType] = (0, import_react.useState)("area");
 	const [hoverIndex, setHoverIndex] = (0, import_react.useState)(null);
 	const containerRef = (0, import_react.useRef)(null);
@@ -1346,7 +1513,7 @@ function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, for
 			costPricesMap
 		};
 	}, [holdings]);
-	const { data: chartData, isLoading, isFetching } = useQuery({
+	const { data: chartData, isFetching } = useQuery({
 		queryKey: [
 			"portfolio-chart",
 			queryPayload.symbolsKey,
@@ -1360,14 +1527,17 @@ function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, for
 			range: selectedRange,
 			includeBenchmark: compareBenchmark
 		} }),
-		enabled: queryPayload.symbols.length > 0,
+		enabled: queryPayload.symbols.length > 0 && dataMode === "live",
 		staleTime: 6e4,
 		placeholderData: keepPreviousData
 	});
-	const points = (0, import_react.useMemo)(() => {
+	const livePoints = (0, import_react.useMemo)(() => {
 		if (chartData?.points && chartData.points.length >= 2) return chartData.points;
 		return [];
 	}, [chartData]);
+	const sheetPoints = (0, import_react.useMemo)(() => {
+		return watchlistHistory && watchlistHistory.length > 0 ? watchlistHistory : DEFAULT_SHEET_WATCHLIST_POINTS;
+	}, [watchlistHistory]);
 	const VB = {
 		w: 900,
 		h: 320
@@ -1378,63 +1548,111 @@ function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, for
 		t: 25,
 		b: 35
 	};
-	const values = points.map((p) => p.value);
-	if (compareBenchmark) points.forEach((p) => {
-		if (p.benchmarkValue) values.push(p.benchmarkValue);
-	});
-	const minVal = Math.min(...values) * .98;
-	const maxVal = Math.max(...values) * 1.02;
-	const valSpan = maxVal - minVal || 1;
 	const innerW = VB.w - PAD.l - PAD.r;
 	const innerH = VB.h - PAD.t - PAD.b;
-	const xOf = (idx) => PAD.l + idx / (points.length - 1 || 1) * innerW;
-	const yOf = (val) => PAD.t + (maxVal - val) / valSpan * innerH;
-	const linePath = (0, import_react.useMemo)(() => {
-		if (points.length < 2) return "";
-		return points.map((p, i) => `${i === 0 ? "M" : "L"} ${xOf(i).toFixed(1)} ${yOf(p.value).toFixed(1)}`).join(" ");
+	const sheetValues = (0, import_react.useMemo)(() => {
+		return sheetPoints.flatMap((p) => [
+			p.mainPortfolio,
+			p.modelPortfolio,
+			p.benchmark
+		]);
+	}, [sheetPoints]);
+	const minSheetVal = Math.min(...sheetValues) * .98;
+	const maxSheetVal = Math.max(...sheetValues) * 1.02;
+	const sheetValSpan = maxSheetVal - minSheetVal || 1;
+	const xSheet = (idx) => PAD.l + idx / (sheetPoints.length - 1 || 1) * innerW;
+	const ySheet = (val) => PAD.t + (maxSheetVal - val) / sheetValSpan * innerH;
+	const sheetMainLine = (0, import_react.useMemo)(() => {
+		if (sheetPoints.length < 2) return "";
+		return sheetPoints.map((p, i) => `${i === 0 ? "M" : "L"} ${xSheet(i).toFixed(1)} ${ySheet(p.mainPortfolio).toFixed(1)}`).join(" ");
 	}, [
-		points,
-		minVal,
-		maxVal
+		sheetPoints,
+		minSheetVal,
+		maxSheetVal
 	]);
-	const areaPath = (0, import_react.useMemo)(() => {
-		if (!linePath || points.length < 2) return "";
-		const lastX = xOf(points.length - 1).toFixed(1);
-		const firstX = xOf(0).toFixed(1);
+	const sheetModelLine = (0, import_react.useMemo)(() => {
+		if (sheetPoints.length < 2) return "";
+		return sheetPoints.map((p, i) => `${i === 0 ? "M" : "L"} ${xSheet(i).toFixed(1)} ${ySheet(p.modelPortfolio).toFixed(1)}`).join(" ");
+	}, [
+		sheetPoints,
+		minSheetVal,
+		maxSheetVal
+	]);
+	const sheetBenchLine = (0, import_react.useMemo)(() => {
+		if (sheetPoints.length < 2) return "";
+		return sheetPoints.map((p, i) => `${i === 0 ? "M" : "L"} ${xSheet(i).toFixed(1)} ${ySheet(p.benchmark).toFixed(1)}`).join(" ");
+	}, [
+		sheetPoints,
+		minSheetVal,
+		maxSheetVal
+	]);
+	const sheetMainArea = (0, import_react.useMemo)(() => {
+		if (!sheetMainLine || sheetPoints.length < 2) return "";
+		const lastX = xSheet(sheetPoints.length - 1).toFixed(1);
+		const firstX = xSheet(0).toFixed(1);
 		const bottomY = (PAD.t + innerH).toFixed(1);
-		return `${linePath} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
-	}, [linePath, points]);
-	const benchmarkLinePath = (0, import_react.useMemo)(() => {
-		if (!compareBenchmark || points.length < 2) return "";
-		return points.map((p, i) => {
+		return `${sheetMainLine} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
+	}, [sheetMainLine, sheetPoints]);
+	const liveValues = (0, import_react.useMemo)(() => {
+		const vals = livePoints.map((p) => p.value);
+		if (compareBenchmark) livePoints.forEach((p) => {
+			if (p.benchmarkValue) vals.push(p.benchmarkValue);
+		});
+		return vals;
+	}, [livePoints, compareBenchmark]);
+	const minLiveVal = Math.min(...liveValues.length ? liveValues : [1]) * .98;
+	const maxLiveVal = Math.max(...liveValues.length ? liveValues : [1]) * 1.02;
+	const liveValSpan = maxLiveVal - minLiveVal || 1;
+	const xLive = (idx) => PAD.l + idx / (livePoints.length - 1 || 1) * innerW;
+	const yLive = (val) => PAD.t + (maxLiveVal - val) / liveValSpan * innerH;
+	const liveMainLine = (0, import_react.useMemo)(() => {
+		if (livePoints.length < 2) return "";
+		return livePoints.map((p, i) => `${i === 0 ? "M" : "L"} ${xLive(i).toFixed(1)} ${yLive(p.value).toFixed(1)}`).join(" ");
+	}, [
+		livePoints,
+		minLiveVal,
+		maxLiveVal
+	]);
+	const liveAreaPath = (0, import_react.useMemo)(() => {
+		if (!liveMainLine || livePoints.length < 2) return "";
+		const lastX = xLive(livePoints.length - 1).toFixed(1);
+		const firstX = xLive(0).toFixed(1);
+		const bottomY = (PAD.t + innerH).toFixed(1);
+		return `${liveMainLine} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
+	}, [liveMainLine, livePoints]);
+	const liveBenchLine = (0, import_react.useMemo)(() => {
+		if (!compareBenchmark || livePoints.length < 2) return "";
+		return livePoints.map((p, i) => {
 			const val = p.benchmarkValue ?? p.value;
-			return `${i === 0 ? "M" : "L"} ${xOf(i).toFixed(1)} ${yOf(val).toFixed(1)}`;
+			return `${i === 0 ? "M" : "L"} ${xLive(i).toFixed(1)} ${yLive(val).toFixed(1)}`;
 		}).join(" ");
 	}, [
-		points,
+		livePoints,
 		compareBenchmark,
-		minVal,
-		maxVal
+		minLiveVal,
+		maxLiveVal
 	]);
+	const currentCount = dataMode === "watchlist_sheet" ? sheetPoints.length : livePoints.length;
 	const handleMouseMove = (e) => {
+		if (currentCount < 2) return;
 		const rect = e.currentTarget.getBoundingClientRect();
 		const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-		const idx = Math.round(ratio * (points.length - 1));
+		const idx = Math.round(ratio * (currentCount - 1));
 		setHoverIndex(idx);
 	};
 	const handleMouseLeave = () => {
 		setHoverIndex(null);
 	};
-	const activePoint = hoverIndex !== null ? points[hoverIndex] : points[points.length - 1];
-	const activeValue = activePoint ? activePoint.value : totalValue;
-	const rangeStartVal = chartData?.startValue || points[0]?.value || totalCost;
-	const rangeChange = activeValue - rangeStartVal;
-	const rangeChangePct = rangeStartVal > 0 ? rangeChange / rangeStartVal * 100 : 0;
-	const isUp = rangeChange >= 0;
-	const formattedActiveDate = (0, import_react.useMemo)(() => {
-		if (!activePoint?.t) return "11 сент., 18:00 UTC";
-		return formatTooltipDate(activePoint.t, selectedRange);
-	}, [activePoint, selectedRange]);
+	const activeSheetPoint = hoverIndex !== null && hoverIndex < sheetPoints.length ? sheetPoints[hoverIndex] : sheetPoints[sheetPoints.length - 1];
+	const activeLivePoint = hoverIndex !== null && hoverIndex < livePoints.length ? livePoints[hoverIndex] : livePoints[livePoints.length - 1];
+	const activeLiveValue = activeLivePoint ? activeLivePoint.value : totalValue;
+	const rangeStartVal = chartData?.startValue || livePoints[0]?.value || totalCost;
+	const liveRangeChange = activeLiveValue - rangeStartVal;
+	const liveRangeChangePct = rangeStartVal > 0 ? liveRangeChange / rangeStartVal * 100 : 0;
+	const liveIsUp = liveRangeChange >= 0;
+	const sheetMainChangePct = activeSheetPoint.mainPortfolio - 100;
+	const sheetIsUp = sheetMainChangePct >= 0;
+	const sheetAlpha = activeSheetPoint.modelPortfolio - activeSheetPoint.mainPortfolio;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		ref: containerRef,
 		className: "rounded-2xl border border-border/80 bg-surface p-5 sm:p-7 shadow-sm transition-all",
@@ -1445,7 +1663,7 @@ function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, for
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex items-center justify-between text-xs text-muted",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center gap-1.5 font-medium",
+							className: "flex items-center gap-1.5 font-medium flex-wrap",
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Главная" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "/" }),
@@ -1460,67 +1678,190 @@ function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, for
 							]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "flex items-center gap-2",
-							children: isFetching ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							children: dataMode === "watchlist_sheet" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "flex items-center gap-1.5 text-[11px] font-medium text-[#0F9D58] bg-[#0F9D58]/10 px-2.5 py-1 rounded-full border border-[#0F9D58]/20",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileSpreadsheet, { className: "size-3.5" }), "Вкладка «Watchlist» (Google Таблица)"]
+							}) : isFetching ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 								className: "flex items-center gap-1 text-[11px] text-accent",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-3 animate-spin" }), "Обновление котировок..."]
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-3 animate-spin" }), "Обновление Yahoo котировок..."]
 							}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 								className: "flex items-center gap-1.5 text-[11px] text-muted",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2 rounded-full bg-up animate-pulse" }), "Google Finance Live"]
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2 rounded-full bg-up animate-pulse" }), "Google Finance / Yahoo Live"]
 							})
 						})]
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-						className: "text-xl sm:text-2xl font-bold tracking-tight text-fg",
-						children: portfolioName
-					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-wrap items-baseline gap-3 pt-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: "text-3xl sm:text-4xl font-bold font-mono tracking-tight text-fg",
-							children: ["$", formatNumber(activeValue, 2)]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: cn("inline-flex items-center gap-1 text-sm sm:text-base font-bold font-mono px-2.5 py-0.5 rounded-md transition-colors", isUp ? "bg-up-soft text-up" : "bg-down-soft text-down"),
-							children: [
-								isUp ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "size-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "size-4" }),
-								isUp ? "+" : "−",
-								Math.abs(rangeChangePct).toFixed(2),
-								"% (",
-								isUp ? "+" : "−",
-								"$",
-								formatNumber(Math.abs(rangeChange), 0),
-								") ",
-								selectedRange.toUpperCase()
-							]
+						className: "flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+							className: "text-xl sm:text-2xl font-bold tracking-tight text-fg",
+							children: dataMode === "watchlist_sheet" ? "Сравнительная динамика (вкладка «Watchlist»)" : portfolioName
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-xs text-muted",
+							children: dataMode === "watchlist_sheet" ? "Период: 16.06.2026 – 16.07.2026 · База = 100.00" : `Вложено: $${formatNumber(totalCost, 0)}`
 						})]
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "text-xs text-muted",
+					dataMode === "watchlist_sheet" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-2 pt-1",
 						children: [
-							formattedActiveDate,
-							" · USD ·",
-							" ",
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-								className: "text-fg font-medium",
-								children: ["Вложено: $", formatNumber(totalCost, 0)]
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-wrap items-baseline gap-3",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-3xl sm:text-4xl font-bold font-mono tracking-tight text-fg",
+										children: activeSheetPoint.mainPortfolio.toFixed(2)
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-sm font-medium text-muted font-mono",
+										children: "(база 100.00 на 16.06)"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: cn("inline-flex items-center gap-1 text-sm sm:text-base font-bold font-mono px-2.5 py-0.5 rounded-md transition-colors", sheetIsUp ? "bg-up-soft text-up" : "bg-down-soft text-down"),
+										children: [
+											sheetIsUp ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "size-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "size-4" }),
+											sheetIsUp ? "+" : "−",
+											Math.abs(sheetMainChangePct).toFixed(2),
+											"% (Основной)"
+										]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-wrap items-center gap-2 pt-1 text-xs",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "inline-flex items-center gap-1.5 rounded-lg border border-[#1a73e8]/30 bg-[#1a73e8]/10 px-2.5 py-1 text-[#1a73e8] font-medium",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2 rounded-full bg-[#1a73e8]" }),
+											"Основной портфель:",
+											" ",
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+												className: "font-mono",
+												children: activeSheetPoint.mainPortfolio.toFixed(2)
+											}),
+											" (",
+											activeSheetPoint.mainPortfolio >= 100 ? "+" : "",
+											(activeSheetPoint.mainPortfolio - 100).toFixed(2),
+											"%)"
+										]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "inline-flex items-center gap-1.5 rounded-lg border border-[#34a853]/30 bg-[#34a853]/10 px-2.5 py-1 text-[#34a853] font-medium",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2 rounded-full bg-[#34a853]" }),
+											"Модельный портфель:",
+											" ",
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+												className: "font-mono",
+												children: activeSheetPoint.modelPortfolio.toFixed(2)
+											}),
+											" (",
+											activeSheetPoint.modelPortfolio >= 100 ? "+" : "",
+											(activeSheetPoint.modelPortfolio - 100).toFixed(2),
+											"%)"
+										]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "inline-flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-amber-700 dark:text-amber-300 font-medium",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2 rounded-full bg-amber-500" }),
+											"Бенчмарк MSCI ACWI:",
+											" ",
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+												className: "font-mono",
+												children: activeSheetPoint.benchmark.toFixed(2)
+											}),
+											" (",
+											activeSheetPoint.benchmark >= 100 ? "+" : "",
+											(activeSheetPoint.benchmark - 100).toFixed(2),
+											"%)"
+										]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "inline-flex items-center gap-1.5 rounded-lg border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 text-purple-700 dark:text-purple-300 font-medium",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "size-3" }),
+											"Альфа (Модельный vs Основной):",
+											" ",
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", {
+												className: "font-mono",
+												children: [
+													sheetAlpha >= 0 ? "+" : "",
+													sheetAlpha.toFixed(2),
+													"%"
+												]
+											})
+										]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-xs text-muted pt-0.5",
+								children: [formatSheetDateFull(activeSheetPoint.date), " · Исторические данные из вашей Google Таблицы"]
 							})
 						]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-1 pt-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-wrap items-baseline gap-3",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "text-3xl sm:text-4xl font-bold font-mono tracking-tight text-fg",
+								children: ["$", formatNumber(activeLiveValue, 2)]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: cn("inline-flex items-center gap-1 text-sm sm:text-base font-bold font-mono px-2.5 py-0.5 rounded-md transition-colors", liveIsUp ? "bg-up-soft text-up" : "bg-down-soft text-down"),
+								children: [
+									liveIsUp ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "size-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "size-4" }),
+									liveIsUp ? "+" : "−",
+									Math.abs(liveRangeChangePct).toFixed(2),
+									"% (",
+									liveIsUp ? "+" : "−",
+									"$",
+									formatNumber(Math.abs(liveRangeChange), 0),
+									")",
+									" ",
+									selectedRange.toUpperCase()
+								]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-xs text-muted",
+							children: [activeLivePoint?.t ? formatTooltipDate(activeLivePoint.t, selectedRange) : "Сегодня", " · USD"]
+						})]
 					})
 				]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "mt-4 flex flex-wrap items-center justify-between gap-2 border-y border-border/60 py-2.5",
+				className: "mt-4 flex flex-wrap items-center justify-between gap-3 border-y border-border/60 py-3",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center rounded-xl bg-bg/80 p-1 border border-border",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						type: "button",
+						onClick: () => setDataMode("watchlist_sheet"),
+						className: cn("flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer", dataMode === "watchlist_sheet" ? "bg-surface text-[#0F9D58] shadow-xs border border-border" : "text-muted hover:text-fg"),
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileSpreadsheet, { className: "size-3.5" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "📊 Watchlist из таблицы (16.06 – 16.07)" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "rounded-full bg-[#0F9D58]/15 px-1.5 py-0.2 text-[10px] font-mono text-[#0F9D58]",
+								children: [sheetPoints.length, " дн."]
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						type: "button",
+						onClick: () => setDataMode("live"),
+						className: cn("flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer", dataMode === "live" ? "bg-surface text-[#1a73e8] shadow-xs border border-border" : "text-muted hover:text-fg"),
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "size-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "📈 Live котировки (Yahoo)" })]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-wrap items-center gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 						type: "button",
 						onClick: () => setChartType(chartType === "area" ? "line" : "area"),
-						className: "flex items-center gap-1.5 rounded-lg border border-border bg-bg/60 px-3 py-1.5 text-xs font-medium text-fg hover:bg-bg transition-colors",
+						className: "flex items-center gap-1.5 rounded-lg border border-border bg-bg/60 px-3 py-1.5 text-xs font-medium text-fg hover:bg-bg transition-colors cursor-pointer",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layers, { className: "size-3.5 text-[#1a73e8]" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: chartType === "area" ? "Диаграмма с областями" : "Линейный график" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: chartType === "area" ? "С областями" : "Линейный" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "size-3 text-muted" })
 						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+					}), dataMode === "live" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 						type: "button",
 						onClick: () => setCompareBenchmark(!compareBenchmark),
 						className: cn("flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer", compareBenchmark ? "border-amber-500/60 bg-amber-500/10 text-amber-700 dark:text-amber-300 font-semibold" : "border-border bg-bg/60 text-muted hover:text-fg hover:bg-bg"),
@@ -1538,181 +1879,368 @@ function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, for
 							})
 						]
 					})]
-				}), compareBenchmark && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-3 text-xs text-muted",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-0.5 w-3 bg-[#1a73e8]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-medium text-fg",
-							children: portfolioName
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-0.5 w-3 bg-[#f59e0b] stroke-dasharray" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-							"Бенчмарк ACWI (+",
-							benchmarkReturnPct,
-							"%)"
-						] })]
-					})]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "relative mt-4 h-64 sm:h-72 w-full",
-				children: [points.length < 2 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex size-full flex-col items-center justify-center rounded-xl bg-bg/40 text-muted border border-border/50",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-6 animate-spin text-[#1a73e8] mb-2" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: "text-xs font-medium text-fg",
-							children: [
-								"Загрузка истории портфеля ",
-								RANGES.find((r) => r.id === selectedRange)?.periodLabel,
-								"..."
-							]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-[11px] text-muted mt-0.5",
-							children: "Сбор котировок активов и расчет кривой доходности"
-						})
-					]
-				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-					viewBox: `0 0 ${VB.w} ${VB.h}`,
-					className: "size-full overflow-visible select-none",
-					preserveAspectRatio: "none",
-					onMouseMove: handleMouseMove,
-					onMouseLeave: handleMouseLeave,
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-							id: "gfAreaGradient",
-							x1: "0",
-							y1: "0",
-							x2: "0",
-							y2: "1",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-									offset: "0%",
-									stopColor: "#1a73e8",
-									stopOpacity: "0.25"
+				children: [
+					dataMode === "live" && livePoints.length < 2 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex size-full flex-col items-center justify-center rounded-xl bg-bg/40 text-muted border border-border/50",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-6 animate-spin text-[#1a73e8] mb-2" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "text-xs font-medium text-fg",
+								children: [
+									"Загрузка истории портфеля ",
+									RANGES.find((r) => r.id === selectedRange)?.periodLabel,
+									"..."
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-[11px] text-muted mt-0.5",
+								children: "Сбор котировок активов и расчет кривой доходности"
+							})
+						]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+						viewBox: `0 0 ${VB.w} ${VB.h}`,
+						className: "size-full overflow-visible select-none",
+						preserveAspectRatio: "none",
+						onMouseMove: handleMouseMove,
+						onMouseLeave: handleMouseLeave,
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+								id: "gfAreaGradient",
+								x1: "0",
+								y1: "0",
+								x2: "0",
+								y2: "1",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+										offset: "0%",
+										stopColor: "#1a73e8",
+										stopOpacity: "0.25"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+										offset: "70%",
+										stopColor: "#1a73e8",
+										stopOpacity: "0.04"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+										offset: "100%",
+										stopColor: "#1a73e8",
+										stopOpacity: "0.00"
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+								id: "gfModelGradient",
+								x1: "0",
+								y1: "0",
+								x2: "0",
+								y2: "1",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+										offset: "0%",
+										stopColor: "#34a853",
+										stopOpacity: "0.20"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+										offset: "70%",
+										stopColor: "#34a853",
+										stopOpacity: "0.03"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+										offset: "100%",
+										stopColor: "#34a853",
+										stopOpacity: "0.00"
+									})
+								]
+							})] }),
+							[
+								.2,
+								.4,
+								.6,
+								.8
+							].map((fraction, i) => {
+								const x = PAD.l + fraction * innerW;
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+									x1: x,
+									y1: PAD.t,
+									x2: x,
+									y2: PAD.t + innerH,
+									stroke: "#e2e8f0",
+									strokeWidth: "1",
+									strokeDasharray: "2 2",
+									opacity: "0.6"
+								}, i);
+							}),
+							dataMode === "watchlist_sheet" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+									x1: PAD.l,
+									y1: ySheet(100),
+									x2: PAD.l + innerW,
+									y2: ySheet(100),
+									stroke: "#94a3b8",
+									strokeWidth: "1",
+									strokeDasharray: "3 3",
+									opacity: "0.5"
 								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-									offset: "70%",
-									stopColor: "#1a73e8",
-									stopOpacity: "0.04"
+								chartType === "area" && sheetMainArea && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+									d: sheetMainArea,
+									fill: "url(#gfAreaGradient)"
 								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-									offset: "100%",
-									stopColor: "#1a73e8",
-									stopOpacity: "0.00"
+								sheetBenchLine && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+									d: sheetBenchLine,
+									fill: "none",
+									stroke: "#f59e0b",
+									strokeWidth: "1.8",
+									strokeDasharray: "4 3",
+									opacity: "0.9"
+								}),
+								sheetModelLine && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+									d: sheetModelLine,
+									fill: "none",
+									stroke: "#34a853",
+									strokeWidth: "2.4",
+									strokeLinecap: "round",
+									strokeLinejoin: "round"
+								}),
+								sheetMainLine && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+									d: sheetMainLine,
+									fill: "none",
+									stroke: "#1a73e8",
+									strokeWidth: "2.4",
+									strokeLinecap: "round",
+									strokeLinejoin: "round"
+								}),
+								hoverIndex === null && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: xSheet(sheetPoints.length - 1),
+										cy: ySheet(sheetPoints[sheetPoints.length - 1].mainPortfolio),
+										r: "4.5",
+										fill: "#1a73e8",
+										stroke: "#ffffff",
+										strokeWidth: "1.5"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: xSheet(sheetPoints.length - 1),
+										cy: ySheet(sheetPoints[sheetPoints.length - 1].modelPortfolio),
+										r: "4.5",
+										fill: "#34a853",
+										stroke: "#ffffff",
+										strokeWidth: "1.5"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: xSheet(sheetPoints.length - 1),
+										cy: ySheet(sheetPoints[sheetPoints.length - 1].benchmark),
+										r: "4",
+										fill: "#f59e0b",
+										stroke: "#ffffff",
+										strokeWidth: "1.5"
+									})
+								] }),
+								hoverIndex !== null && hoverIndex < sheetPoints.length && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+										x1: xSheet(hoverIndex),
+										y1: PAD.t,
+										x2: xSheet(hoverIndex),
+										y2: PAD.t + innerH,
+										stroke: "#1a73e8",
+										strokeWidth: "1",
+										strokeDasharray: "3 3"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: xSheet(hoverIndex),
+										cy: ySheet(sheetPoints[hoverIndex].mainPortfolio),
+										r: "5",
+										fill: "#1a73e8",
+										stroke: "#ffffff",
+										strokeWidth: "2"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: xSheet(hoverIndex),
+										cy: ySheet(sheetPoints[hoverIndex].modelPortfolio),
+										r: "5",
+										fill: "#34a853",
+										stroke: "#ffffff",
+										strokeWidth: "2"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: xSheet(hoverIndex),
+										cy: ySheet(sheetPoints[hoverIndex].benchmark),
+										r: "4.5",
+										fill: "#f59e0b",
+										stroke: "#ffffff",
+										strokeWidth: "2"
+									})
+								] }),
+								[
+									0,
+									.25,
+									.5,
+									.75,
+									1
+								].map((f, i) => {
+									const idx = Math.round(f * (sheetPoints.length - 1));
+									const p = sheetPoints[idx];
+									if (!p?.date) return null;
+									const label = formatSheetDateLabel(p.date);
+									return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+										x: xSheet(idx),
+										y: PAD.t + innerH + 18,
+										textAnchor: i === 0 ? "start" : i === 4 ? "end" : "middle",
+										fontSize: "11",
+										fill: "#8f8e86",
+										fontFamily: "sans-serif",
+										children: label
+									}, i);
+								})
+							] }),
+							dataMode === "live" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+								chartType === "area" && liveAreaPath && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+									d: liveAreaPath,
+									fill: "url(#gfAreaGradient)"
+								}),
+								compareBenchmark && liveBenchLine && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+									d: liveBenchLine,
+									fill: "none",
+									stroke: "#f59e0b",
+									strokeWidth: "2",
+									strokeDasharray: "4 3",
+									opacity: "0.85"
+								}),
+								liveMainLine && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+									d: liveMainLine,
+									fill: "none",
+									stroke: "#1a73e8",
+									strokeWidth: "2.4",
+									strokeLinecap: "round",
+									strokeLinejoin: "round"
+								}),
+								livePoints.length > 0 && hoverIndex === null && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+									cx: xLive(livePoints.length - 1),
+									cy: yLive(livePoints[livePoints.length - 1].value),
+									r: "4.5",
+									fill: "#1a73e8",
+									stroke: "#ffffff",
+									strokeWidth: "1.5"
+								}),
+								hoverIndex !== null && hoverIndex < livePoints.length && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+									x1: xLive(hoverIndex),
+									y1: PAD.t,
+									x2: xLive(hoverIndex),
+									y2: PAD.t + innerH,
+									stroke: "#1a73e8",
+									strokeWidth: "1",
+									strokeDasharray: "3 3"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+									cx: xLive(hoverIndex),
+									cy: yLive(livePoints[hoverIndex].value),
+									r: "5",
+									fill: "#1a73e8",
+									stroke: "#ffffff",
+									strokeWidth: "2"
+								})] }),
+								[
+									0,
+									.25,
+									.5,
+									.75,
+									1
+								].map((f, i) => {
+									const idx = Math.round(f * (livePoints.length - 1));
+									const p = livePoints[idx];
+									if (!p?.t) return null;
+									const label = formatXAxisLabel(p.t, selectedRange);
+									return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+										x: xLive(idx),
+										y: PAD.t + innerH + 18,
+										textAnchor: i === 0 ? "start" : i === 4 ? "end" : "middle",
+										fontSize: "11",
+										fill: "#8f8e86",
+										fontFamily: "sans-serif",
+										children: label
+									}, i);
+								})
+							] })
+						]
+					}),
+					dataMode === "watchlist_sheet" && hoverIndex !== null && activeSheetPoint && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "pointer-events-none absolute -top-8 rounded-xl border border-border bg-surface/95 p-2.5 shadow-lg backdrop-blur-md transition-all z-20 min-w-[200px]",
+						style: {
+							left: `${Math.max(12, Math.min(82, hoverIndex / (sheetPoints.length - 1) * 100))}%`,
+							transform: "translateX(-50%)"
+						},
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-[11px] font-semibold text-fg border-b border-border/60 pb-1 mb-1.5 flex items-center gap-1.5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "size-3 text-muted" }), formatSheetDateFull(activeSheetPoint.date)]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-1 text-xs font-mono",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between gap-3 text-[#1a73e8]",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Основной:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [
+										activeSheetPoint.mainPortfolio.toFixed(2),
+										" (",
+										activeSheetPoint.mainPortfolio >= 100 ? "+" : "",
+										(activeSheetPoint.mainPortfolio - 100).toFixed(2),
+										"%)"
+									] })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between gap-3 text-[#34a853]",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Модельный:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [
+										activeSheetPoint.modelPortfolio.toFixed(2),
+										" (",
+										activeSheetPoint.modelPortfolio >= 100 ? "+" : "",
+										(activeSheetPoint.modelPortfolio - 100).toFixed(2),
+										"%)"
+									] })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between gap-3 text-amber-600 dark:text-amber-400",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "MSCI ACWI:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [
+										activeSheetPoint.benchmark.toFixed(2),
+										" (",
+										activeSheetPoint.benchmark >= 100 ? "+" : "",
+										(activeSheetPoint.benchmark - 100).toFixed(2),
+										"%)"
+									] })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between gap-3 text-purple-600 dark:text-purple-300 pt-1 border-t border-border/40 text-[11px]",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Альфа Модель/Осн:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [
+										sheetAlpha >= 0 ? "+" : "",
+										sheetAlpha.toFixed(2),
+										"%"
+									] })]
 								})
 							]
-						}) }),
-						[
-							.2,
-							.4,
-							.6,
-							.8
-						].map((fraction, i) => {
-							const x = PAD.l + fraction * innerW;
-							return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
-								x1: x,
-								y1: PAD.t,
-								x2: x,
-								y2: PAD.t + innerH,
-								stroke: "#e2e8f0",
-								strokeWidth: "1",
-								strokeDasharray: "2 2",
-								opacity: "0.6"
-							}, i);
-						}),
-						chartType === "area" && areaPath && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-							d: areaPath,
-							fill: "url(#gfAreaGradient)"
-						}),
-						compareBenchmark && benchmarkLinePath && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-							d: benchmarkLinePath,
-							fill: "none",
-							stroke: "#f59e0b",
-							strokeWidth: "2",
-							strokeDasharray: "4 3",
-							opacity: "0.85"
-						}),
-						linePath && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-							d: linePath,
-							fill: "none",
-							stroke: "#1a73e8",
-							strokeWidth: "2.4",
-							strokeLinecap: "round",
-							strokeLinejoin: "round"
-						}),
-						points.length > 0 && hoverIndex === null && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-							cx: xOf(points.length - 1),
-							cy: yOf(points[points.length - 1].value),
-							r: "4.5",
-							fill: "#1a73e8",
-							stroke: "#ffffff",
-							strokeWidth: "1.5"
-						}),
-						hoverIndex !== null && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
-							x1: xOf(hoverIndex),
-							y1: PAD.t,
-							x2: xOf(hoverIndex),
-							y2: PAD.t + innerH,
-							stroke: "#1a73e8",
-							strokeWidth: "1",
-							strokeDasharray: "3 3"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-							cx: xOf(hoverIndex),
-							cy: yOf(points[hoverIndex].value),
-							r: "5",
-							fill: "#1a73e8",
-							stroke: "#ffffff",
-							strokeWidth: "2"
-						})] }),
-						[
-							0,
-							.25,
-							.5,
-							.75,
-							1
-						].map((f, i) => {
-							const idx = Math.round(f * (points.length - 1));
-							const p = points[idx];
-							if (!p?.t) return null;
-							const label = formatXAxisLabel(p.t, selectedRange);
-							return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
-								x: xOf(idx),
-								y: PAD.t + innerH + 18,
-								textAnchor: i === 0 ? "start" : i === 4 ? "end" : "middle",
-								fontSize: "11",
-								fill: "#8f8e86",
-								fontFamily: "sans-serif",
-								children: label
-							}, i);
-						})
-					]
-				}), hoverIndex !== null && activePoint && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "pointer-events-none absolute -top-4 rounded-lg border border-border bg-surface/95 px-3 py-1.5 shadow-md backdrop-blur-sm transition-all",
-					style: {
-						left: `${Math.max(10, Math.min(85, hoverIndex / (points.length - 1) * 100))}%`,
-						transform: "translateX(-50%)"
-					},
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-[11px] text-muted",
-							children: formattedActiveDate
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "font-mono text-xs font-bold text-fg",
-							children: ["$", formatNumber(activePoint.value, 2)]
-						}),
-						activePoint.benchmarkValue && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "text-[10px] text-amber-600 font-mono",
-							children: ["ACWI: $", formatNumber(activePoint.benchmarkValue, 0)]
-						})
-					]
-				})]
+						})]
+					}),
+					dataMode === "live" && hoverIndex !== null && activeLivePoint && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "pointer-events-none absolute -top-4 rounded-lg border border-border bg-surface/95 px-3 py-1.5 shadow-md backdrop-blur-sm transition-all",
+						style: {
+							left: `${Math.max(10, Math.min(85, hoverIndex / (livePoints.length - 1) * 100))}%`,
+							transform: "translateX(-50%)"
+						},
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-[11px] text-muted",
+								children: activeLivePoint.t ? formatTooltipDate(activeLivePoint.t, selectedRange) : ""
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "font-mono text-xs font-bold text-fg",
+								children: ["$", formatNumber(activeLivePoint.value, 2)]
+							}),
+							activeLivePoint.benchmarkValue && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-[10px] text-amber-600 font-mono",
+								children: ["ACWI: $", formatNumber(activeLivePoint.benchmarkValue, 0)]
+							})
+						]
+					})
+				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			dataMode === "live" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "mt-4 flex flex-wrap items-center justify-start gap-1 sm:gap-2 pt-2 border-t border-border/50",
 				children: RANGES.map((r) => {
 					const active = selectedRange === r.id;
@@ -1723,6 +2251,15 @@ function GoogleFinancePortfolioChart({ portfolioName, totalValue, totalCost, for
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: r.label })
 					}, r.id);
 				})
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "mt-4 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-border/50 text-xs text-muted",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "inline-block size-2 rounded-full bg-[#0F9D58]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Показаны реальные котировки из таблицы ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Google Sheets (Watchlist)" })] })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "font-mono text-[11px] text-muted",
+					children: "Итог 16.07: Основной 93.21 · Модельный 95.71 · ACWI 99.38"
+				})]
 			})
 		]
 	});
@@ -1790,6 +2327,16 @@ function PortfolioPanel({ quotes, onSelectTicker }) {
 		return initial;
 	});
 	const [benchmark, setBenchmark] = (0, import_react.useState)(DEFAULT_BENCHMARK_INDICATIVE);
+	const [watchlistHistory, setWatchlistHistory] = (0, import_react.useState)(() => {
+		if (typeof window !== "undefined") {
+			const saved = localStorage.getItem("grok_monitor_watchlist_history_v1");
+			if (saved) try {
+				const parsed = JSON.parse(saved);
+				if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+			} catch {}
+		}
+		return DEFAULT_SHEET_WATCHLIST_POINTS;
+	});
 	const [sheetUrl, setSheetUrl] = (0, import_react.useState)(DEFAULT_GOOGLE_SHEET_URL);
 	const [isSyncing, setIsSyncing] = (0, import_react.useState)(false);
 	const [isCopiedTemplate, setIsCopiedTemplate] = (0, import_react.useState)(false);
@@ -1881,7 +2428,11 @@ function PortfolioPanel({ quotes, onSelectTicker }) {
 				return;
 			}
 			saveHoldings(res.holdings, res.benchmark);
-			toast.success(`Успешно загружено ${res.holdings.length} позиций из Google Таблицы!`);
+			if (res.watchlistHistory && res.watchlistHistory.length > 0) {
+				setWatchlistHistory(res.watchlistHistory);
+				if (typeof window !== "undefined") localStorage.setItem("grok_monitor_watchlist_history_v1", JSON.stringify(res.watchlistHistory));
+			}
+			toast.success(`Синхронизировано: ${res.holdings.length} активов из «Лист1» + ${res.watchlistHistory?.length || 0} дней динамики из вкладки «Watchlist»!`);
 		} catch (err) {
 			toast.error(`Ошибка синхронизации: ${err instanceof Error ? err.message : String(err)}`);
 		} finally {
@@ -1995,7 +2546,8 @@ function PortfolioPanel({ quotes, onSelectTicker }) {
 				totalCost: summary.totalCost,
 				formationDate: selectedGroup === "all" ? void 0 : "16.06",
 				benchmarkReturnPct: benchmark.pnlPct,
-				holdings: displayedHoldings
+				holdings: displayedHoldings,
+				watchlistHistory
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "rounded-xl border border-border/80 bg-surface p-4 shadow-sm",

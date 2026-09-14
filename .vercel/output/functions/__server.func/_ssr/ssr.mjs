@@ -88,7 +88,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-BY0gvfZC.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-CzCrfImK.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -122,7 +122,7 @@ var manifest = {
 	},
 	"c3bf7882619a523e48b9c5d821a31eccf348c893591eb3fd9843ff2c883403bd": {
 		functionName: "fetchSheetData_createServerFn_handler",
-		importer: () => import("./google-sheets-DHNCij4N.mjs")
+		importer: () => import("./google-sheets-B7AnaVYw.mjs")
 	},
 	"e7ba96f3582fa61a1e6a4c12c9949c309908c4cad462d84783ed245a07a0ceac": {
 		functionName: "getChart_createServerFn_handler",
@@ -1400,7 +1400,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-E_2MYFzy.mjs").then((n) => n.t),
+		import("./router-Bf-GBy1j.mjs").then((n) => n.t),
 		import("./start-5Z2QO8AU.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);
