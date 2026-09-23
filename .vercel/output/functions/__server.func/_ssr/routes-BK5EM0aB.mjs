@@ -4,16 +4,16 @@ import { a as DialogOverlay$1, c as DialogTrigger$1, i as DialogDescription$1, n
 import { t as createServerFn } from "./ssr.mjs";
 import { c as string, o as object } from "../_libs/zod.mjs";
 import { a as displayTicker, c as watchlist_default, i as WATCHLIST_CONFIG_VERSION, n as RANGES$1, s as rangeById, t as DEFAULT_SYMBOLS } from "./market-types-gv-rWKG5.mjs";
-import { A as ChevronDown, C as FileSpreadsheet, D as DollarSign, E as Download, F as CalendarPlus, I as Calculator, L as Building2, M as ChartColumn, N as ChartLine, O as Copy, P as Calendar, R as ArrowLeftRight, S as GitCompare, T as Ellipsis, _ as PanelLeftOpen, a as TrendingDown, b as List, c as Sparkles, d as Scale, f as RotateCcw, g as PanelRightClose, h as PanelRightOpen, i as TrendingUp, j as Check, k as Clock, l as ShieldAlert, m as Plus, n as Upload, o as Trash2, p as RefreshCw, s as Star, t as X, u as Search, v as PanelLeftClose, w as ExternalLink, x as Layers, y as LoaderCircle, z as Activity } from "../_libs/lucide-react.mjs";
+import { A as Clock, B as Activity, C as FileSpreadsheet, D as DollarSign, E as Download, F as Calendar, I as CalendarPlus, L as Calculator, M as Check, N as ChartColumn, O as Crosshair, P as ChartLine, R as Building2, S as GitCompare, T as Ellipsis, _ as PanelLeftOpen, a as TrendingDown, b as List, c as Sparkles, d as Scale, f as RotateCcw, g as PanelRightClose, h as PanelRightOpen, i as TrendingUp, j as ChevronDown, k as Copy, l as ShieldAlert, m as Plus, n as Upload, o as Trash2, p as RefreshCw, s as Star, t as X, u as Search, v as PanelLeftClose, w as ExternalLink, x as Layers, y as LoaderCircle, z as ArrowLeftRight } from "../_libs/lucide-react.mjs";
 import { t as useQuery } from "../_libs/tanstack__react-query.mjs";
 import { i as keepPreviousData } from "../_libs/tanstack__query-core.mjs";
 import { n as toast } from "../_libs/sonner.mjs";
-import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-CK63Sae3.mjs";
+import { a as getPortfolioHistoricalChart, c as createSsrRpc, i as getChart, n as Route, o as getQuotes, r as explainMove, s as searchSymbols } from "./router-CF5-snuD.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { n as create, t as persist } from "../_libs/zustand.mjs";
 import { i as Trigger, n as List$1, r as Root2, t as Content } from "../_libs/radix-ui__react-tabs.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-yKX7bCSs.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-BK5EM0aB.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function cn(...inputs) {
@@ -3846,6 +3846,937 @@ function EarningsCalendar({ onSelectTicker }) {
 		})]
 	});
 }
+var SHKRELI_SHORTS = [
+	{
+		symbol: "IONQ",
+		side: "short",
+		companyName: "IonQ, Inc.",
+		category: "Quantum Computing"
+	},
+	{
+		symbol: "CAPR",
+		side: "short",
+		companyName: "Capricor Therapeutics",
+		category: "Biotech"
+	},
+	{
+		symbol: "AGEN",
+		side: "short",
+		companyName: "Agenus Inc.",
+		category: "Immuno-oncology"
+	},
+	{
+		symbol: "TWST",
+		side: "short",
+		companyName: "Twist Bioscience",
+		category: "Synthetic Biology"
+	},
+	{
+		symbol: "SLS",
+		side: "short",
+		companyName: "SELLAS Life Sciences Group",
+		category: "Biotech"
+	},
+	{
+		symbol: "QBTS",
+		side: "short",
+		companyName: "D-Wave Quantum Inc.",
+		category: "Quantum Computing"
+	},
+	{
+		symbol: "SDGR",
+		side: "short",
+		companyName: "Schrödinger, Inc.",
+		category: "Biotech / Software"
+	},
+	{
+		symbol: "SNDK",
+		side: "short",
+		companyName: "SNDK",
+		category: "Tech / Speculative"
+	},
+	{
+		symbol: "CRWV",
+		side: "short",
+		companyName: "Crown Electrokinetics",
+		category: "Clean Tech"
+	},
+	{
+		symbol: "VKTX",
+		side: "short",
+		companyName: "Viking Therapeutics",
+		category: "Metabolic / Obesity"
+	},
+	{
+		symbol: "CLDX",
+		side: "short",
+		companyName: "Celldex Therapeutics",
+		category: "Biotech"
+	},
+	{
+		symbol: "CBRS",
+		side: "short",
+		companyName: "Cerebras / Cabaletta Bio",
+		category: "Biotech / Tech"
+	},
+	{
+		symbol: "QNT",
+		side: "short",
+		companyName: "Quant / Quanterix",
+		category: "Diagnostics / Crypto"
+	},
+	{
+		symbol: "RGTI",
+		side: "short",
+		companyName: "Rigetti Computing",
+		category: "Quantum Computing"
+	},
+	{
+		symbol: "BTQ",
+		side: "short",
+		companyName: "BTQ Technologies",
+		category: "Post-Quantum Security"
+	},
+	{
+		symbol: "KOD",
+		side: "short",
+		companyName: "Kodiak Sciences",
+		category: "Ophthalmology"
+	},
+	{
+		symbol: "IVA",
+		side: "short",
+		companyName: "Inventiva S.A.",
+		category: "Biotech / NASH"
+	},
+	{
+		symbol: "JAGX",
+		side: "short",
+		companyName: "Jaguar Health",
+		category: "Commercial Biotech"
+	}
+];
+var SHKRELI_LONGS = [
+	{
+		symbol: "RARE",
+		side: "long",
+		companyName: "Ultragenyx Pharmaceutical",
+		category: "Rare Diseases"
+	},
+	{
+		symbol: "PRAX",
+		side: "long",
+		companyName: "Praxis Precision Medicines",
+		category: "CNS / Neurology"
+	},
+	{
+		symbol: "SPRB",
+		side: "long",
+		companyName: "Spruce Biosciences",
+		category: "Endocrinology"
+	},
+	{
+		symbol: "ALNY",
+		side: "long",
+		companyName: "Alnylam Pharmaceuticals",
+		category: "RNAi Therapeutics"
+	},
+	{
+		symbol: "SPOT",
+		side: "long",
+		companyName: "Spotify Technology S.A.",
+		category: "Digital Media"
+	},
+	{
+		symbol: "ASND",
+		side: "long",
+		companyName: "Ascendis Pharma A/S",
+		category: "Biopharma"
+	},
+	{
+		symbol: "BCRX",
+		side: "long",
+		companyName: "BioCryst Pharmaceuticals",
+		category: "Rare Diseases"
+	},
+	{
+		symbol: "SYRE",
+		side: "long",
+		companyName: "Spyre Therapeutics",
+		category: "IBD / Immunology"
+	},
+	{
+		symbol: "ARGX",
+		side: "long",
+		companyName: "argenx SE",
+		category: "Immunology"
+	},
+	{
+		symbol: "RVMD",
+		side: "long",
+		companyName: "Revolution Medicines",
+		category: "RAS Oncology"
+	},
+	{
+		symbol: "XENE",
+		side: "long",
+		companyName: "Xenon Pharmaceuticals",
+		category: "Neuroscience"
+	},
+	{
+		symbol: "IRD",
+		side: "long",
+		companyName: "IRADIMED Corporation",
+		category: "Medical Devices"
+	},
+	{
+		symbol: "PTCT",
+		side: "long",
+		companyName: "PTC Therapeutics",
+		category: "Rare Disorders"
+	},
+	{
+		symbol: "MDGL",
+		side: "long",
+		companyName: "Madrigal Pharmaceuticals",
+		category: "NASH / MASH"
+	},
+	{
+		symbol: "RYTM",
+		side: "long",
+		companyName: "Rhythm Pharmaceuticals",
+		category: "Rare Genetic Diseases"
+	},
+	{
+		symbol: "CELC",
+		side: "long",
+		companyName: "Celcuity Inc.",
+		category: "Precision Oncology"
+	},
+	{
+		symbol: "DXYZ",
+		side: "long",
+		companyName: "Destiny Tech100",
+		category: "Private Tech Fund"
+	}
+];
+var ALL_SHKRELI_POSITIONS = [...SHKRELI_LONGS, ...SHKRELI_SHORTS];
+var SHKRELI_SHORT_SYMBOLS = SHKRELI_SHORTS.map((p) => p.symbol);
+var SHKRELI_LONG_SYMBOLS = SHKRELI_LONGS.map((p) => p.symbol);
+[...SHKRELI_LONG_SYMBOLS, ...SHKRELI_SHORT_SYMBOLS];
+function ShkreliRadar({ onSelectTicker }) {
+	const [search, setSearch] = (0, import_react.useState)("");
+	const [filterSide, setFilterSide] = (0, import_react.useState)("all");
+	const [sortMode, setSortMode] = (0, import_react.useState)("pnl_desc");
+	const [viewMode, setViewMode] = (0, import_react.useState)("columns");
+	const [isCopied, setIsCopied] = (0, import_react.useState)(false);
+	const watchlistSymbols = useWatchlist((s) => s.symbols);
+	const addWatchlist = useWatchlist((s) => s.add);
+	const quotesQuery = useQuery({
+		queryKey: ["shkreli-quotes"],
+		queryFn: async () => {
+			const [longQuotes, shortQuotes] = await Promise.all([getQuotes({ data: { symbols: SHKRELI_LONG_SYMBOLS } }), getQuotes({ data: { symbols: SHKRELI_SHORT_SYMBOLS } })]);
+			return [...longQuotes, ...shortQuotes];
+		},
+		staleTime: 15e3,
+		refetchInterval: 3e4
+	});
+	const quotes = quotesQuery.data ?? [];
+	const quotesMap = (0, import_react.useMemo)(() => {
+		const map = /* @__PURE__ */ new Map();
+		for (const q of quotes) map.set(q.symbol, q);
+		return map;
+	}, [quotes]);
+	const enrichedPositions = (0, import_react.useMemo)(() => {
+		return ALL_SHKRELI_POSITIONS.map((pos) => {
+			const q = quotesMap.get(pos.symbol);
+			const price = q?.price ?? 0;
+			const changePct = q?.changePct ?? 0;
+			const previousClose = q?.previousClose ?? 0;
+			const changeUsd = previousClose > 0 ? price - previousClose : 0;
+			const effectivePnlPct = pos.side === "short" ? -changePct : changePct;
+			const effectivePnlUsd = pos.side === "short" ? -changeUsd : changeUsd;
+			return {
+				...pos,
+				quote: q,
+				price,
+				changePct,
+				changeUsd,
+				effectivePnlPct,
+				effectivePnlUsd,
+				previousClose,
+				dayHigh: q?.dayHigh ?? price,
+				dayLow: q?.dayLow ?? price,
+				spark: q?.spark ?? [],
+				volume: q?.volume ?? 0
+			};
+		});
+	}, [quotesMap]);
+	const basketStats = (0, import_react.useMemo)(() => {
+		const longs = enrichedPositions.filter((p) => p.side === "long" && p.price > 0);
+		const shorts = enrichedPositions.filter((p) => p.side === "short" && p.price > 0);
+		const longAvgPct = longs.length > 0 ? longs.reduce((acc, p) => acc + p.changePct, 0) / longs.length : 0;
+		const shortStockAvgPct = shorts.length > 0 ? shorts.reduce((acc, p) => acc + p.changePct, 0) / shorts.length : 0;
+		const shortEffectivePnlPct = -shortStockAvgPct;
+		return {
+			longAvgPct,
+			shortStockAvgPct,
+			shortEffectivePnlPct,
+			netLsSpread: (longAvgPct + shortEffectivePnlPct) / 2,
+			longGainers: longs.filter((p) => p.changePct > 0).length,
+			longLosers: longs.filter((p) => p.changePct < 0).length,
+			shortWinners: shorts.filter((p) => p.effectivePnlPct > 0).length,
+			shortLosers: shorts.filter((p) => p.effectivePnlPct < 0).length,
+			topLong: longs.length > 0 ? [...longs].sort((a, b) => b.changePct - a.changePct)[0] : null,
+			topShort: shorts.length > 0 ? [...shorts].sort((a, b) => b.effectivePnlPct - a.effectivePnlPct)[0] : null,
+			loadedCount: enrichedPositions.filter((p) => p.price > 0).length
+		};
+	}, [enrichedPositions]);
+	const filteredPositions = (0, import_react.useMemo)(() => {
+		let result = enrichedPositions;
+		if (filterSide !== "all") result = result.filter((p) => p.side === filterSide);
+		if (search.trim()) {
+			const q = search.trim().toLowerCase();
+			result = result.filter((p) => p.symbol.toLowerCase().includes(q) || p.companyName.toLowerCase().includes(q) || p.category && p.category.toLowerCase().includes(q));
+		}
+		return [...result].sort((a, b) => {
+			switch (sortMode) {
+				case "pnl_desc": return b.effectivePnlPct - a.effectivePnlPct;
+				case "pnl_asc": return a.effectivePnlPct - b.effectivePnlPct;
+				case "pct_desc": return b.changePct - a.changePct;
+				case "pct_asc": return a.changePct - b.changePct;
+				case "symbol_asc": return a.symbol.localeCompare(b.symbol);
+				case "price_desc": return b.price - a.price;
+				default: return 0;
+			}
+		});
+	}, [
+		enrichedPositions,
+		filterSide,
+		search,
+		sortMode
+	]);
+	const longsFiltered = (0, import_react.useMemo)(() => {
+		return filteredPositions.filter((p) => p.side === "long");
+	}, [filteredPositions]);
+	const shortsFiltered = (0, import_react.useMemo)(() => {
+		return filteredPositions.filter((p) => p.side === "short");
+	}, [filteredPositions]);
+	const handleCopyTickers = () => {
+		const text = `SHKRELI LONGS:\n${SHKRELI_LONG_SYMBOLS.join(", ")}\n\nSHKRELI SHORTS:\n${SHKRELI_SHORT_SYMBOLS.join(", ")}`;
+		navigator.clipboard.writeText(text);
+		setIsCopied(true);
+		toast.success("Тикеры скопированы в буфер обмена");
+		setTimeout(() => setIsCopied(false), 2e3);
+	};
+	const handleExportCsv = () => {
+		const header = "Тикер,Сторона,Компания,Сектор,Цена (USD),Изм за день %,P&L позиции %\n";
+		const rows = enrichedPositions.map((p) => `"${p.symbol}","${p.side.toUpperCase()}","${p.companyName}","${p.category || ""}","${p.price.toFixed(2)}","${p.changePct.toFixed(2)}%","${p.effectivePnlPct.toFixed(2)}%"`).join("\n");
+		const blob = new Blob([header + rows], { type: "text/csv;charset=utf-8;" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = `shkreli_positions_radar_${(/* @__PURE__ */ new Date()).toISOString().slice(0, 10)}.csv`;
+		link.click();
+		URL.revokeObjectURL(url);
+		toast.success("CSV файл успешно выгружен");
+	};
+	const handleAddAllToWatchlist = (side) => {
+		const symbols = side === "long" ? SHKRELI_LONG_SYMBOLS : SHKRELI_SHORT_SYMBOLS;
+		let added = 0;
+		for (const sym of symbols) if (!watchlistSymbols.includes(sym)) {
+			addWatchlist(sym);
+			added++;
+		}
+		toast.success(`Добавлено ${added} тикеров ${side.toUpperCase()} в ваш список наблюдения`);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-surface via-surface to-bg p-5 sm:p-6 shadow-sm",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col gap-4 md:flex-row md:items-center md:justify-between",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-1.5",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-wrap items-center gap-2",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "inline-flex items-center gap-1.5 rounded-md bg-[#E37400]/10 px-2.5 py-1 text-xs font-semibold text-[#E37400]",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Crosshair, { className: "size-3.5" }), "Shkreli Market Positions"]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "rounded-md border border-border bg-bg/50 px-2 py-0.5 text-[11px] font-medium text-muted",
+										children: "35 активов: 17 Longs · 18 Shorts"
+									}),
+									quotesQuery.isFetching && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "flex items-center gap-1 text-[11px] text-[#4285F4]",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "size-3 animate-spin" }), "обновление..."]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+								className: "text-xl sm:text-2xl font-bold tracking-tight text-fg",
+								children: "Радар позиций Мартина Шкрели (Long / Short)"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "max-w-2xl text-xs sm:text-sm text-muted",
+								children: "Интерактивный мониторинг позиций биотех- и квантового портфеля с анализом цен, спарклайнов и эффективной доходности шорт- и лонг-корзин."
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-wrap items-center gap-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								variant: "outline",
+								size: "sm",
+								onClick: () => quotesQuery.refetch(),
+								disabled: quotesQuery.isFetching,
+								className: "gap-1.5 text-xs bg-surface",
+								title: "Обновить котировки",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: cn("size-3.5", quotesQuery.isFetching && "animate-spin") }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Обновить" })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								variant: "outline",
+								size: "sm",
+								onClick: handleCopyTickers,
+								className: "gap-1.5 text-xs bg-surface",
+								title: "Скопировать тикеры",
+								children: [isCopied ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "size-3.5 text-up" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "size-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: isCopied ? "Скопировано" : "Тикеры" })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								variant: "outline",
+								size: "sm",
+								onClick: handleExportCsv,
+								className: "gap-1.5 text-xs bg-surface",
+								title: "Выгрузить в CSV",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "size-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "CSV" })]
+							})
+						]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "rounded-xl border border-up/20 bg-up-soft/40 p-3.5 sm:p-4 transition-all",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-xs font-semibold text-up flex items-center gap-1.5",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2 rounded-full bg-up" }), "LONG КОРЗИНА (17)"]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-[11px] text-muted",
+										children: [
+											basketStats.longGainers,
+											" 🟢 / ",
+											basketStats.longLosers,
+											" 🔴"
+										]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-2 flex items-baseline gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: cn("text-2xl font-bold tabular-nums tracking-tight", basketStats.longAvgPct >= 0 ? "text-up" : "text-down"),
+										children: formatPercent(basketStats.longAvgPct, 2)
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-[11px] text-muted font-medium",
+										children: "среднее за день"
+									})]
+								}),
+								basketStats.topLong && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-2 flex items-center justify-between text-[11px] border-t border-up/10 pt-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-muted",
+										children: "Топ лонг:"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "font-semibold text-up",
+										children: [
+											basketStats.topLong.symbol,
+											" (",
+											formatPercent(basketStats.topLong.changePct, 1),
+											")"
+										]
+									})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "rounded-xl border border-down/20 bg-down-soft/40 p-3.5 sm:p-4 transition-all",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-xs font-semibold text-down flex items-center gap-1.5",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2 rounded-full bg-down" }), "SHORT КОРЗИНА (18)"]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-[11px] text-muted",
+										children: [
+											basketStats.shortWinners,
+											" 🟢 / ",
+											basketStats.shortLosers,
+											" 🔴"
+										]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-2 flex items-baseline gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: cn("text-2xl font-bold tabular-nums tracking-tight", basketStats.shortEffectivePnlPct >= 0 ? "text-up" : "text-down"),
+										children: formatPercent(basketStats.shortEffectivePnlPct, 2)
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-[11px] text-muted font-medium",
+										children: "P&L шорта"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-2 flex items-center justify-between text-[11px] border-t border-down/10 pt-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-muted",
+										children: "Цена акций:"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "font-medium text-muted",
+										children: [formatPercent(basketStats.shortStockAvgPct, 2), " (спад = плюс)"]
+									})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "rounded-xl border border-border bg-surface p-3.5 sm:p-4 transition-all shadow-sm",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-xs font-semibold text-accent flex items-center gap-1.5",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "size-3.5" }), "L/S СПРЕД (ALPHA)"]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-[10px] uppercase font-bold text-muted bg-bg px-1.5 py-0.5 rounded",
+										children: "Синтетика"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-2 flex items-baseline gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: cn("text-2xl font-bold tabular-nums tracking-tight", basketStats.netLsSpread >= 0 ? "text-up" : "text-down"),
+										children: formatPercent(basketStats.netLsSpread, 2)
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-[11px] text-muted font-medium",
+										children: "чистый спред дня"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-2 flex items-center justify-between text-[11px] border-t border-border pt-2 text-muted",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Статус:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-semibold text-fg",
+										children: basketStats.netLsSpread >= 0 ? "Лонги опережают шорт" : "Шорты опережают лонг"
+									})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "rounded-xl border border-border bg-surface p-3.5 sm:p-4 transition-all shadow-sm flex flex-col justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between text-xs font-semibold text-muted",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Импорт в Вочлист" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "text-[11px] font-mono text-fg",
+									children: [basketStats.loadedCount, "/35 онлайн"]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1 text-[11px] text-muted leading-tight",
+								children: "Добавить тикеры корзин в левую панель наблюдения:"
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-2.5 flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "outline",
+									size: "sm",
+									onClick: () => handleAddAllToWatchlist("long"),
+									className: "flex-1 text-[11px] h-7 border-up/30 text-up hover:bg-up-soft",
+									children: "+ Все Longs"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "outline",
+									size: "sm",
+									onClick: () => handleAddAllToWatchlist("short"),
+									className: "flex-1 text-[11px] h-7 border-down/30 text-down hover:bg-down-soft",
+									children: "+ Все Shorts"
+								})]
+							})]
+						})
+					]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-surface border border-border p-3 rounded-xl shadow-sm",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative flex-1 min-w-[200px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						placeholder: "Поиск по тикеру, компании или сектору...",
+						value: search,
+						onChange: (e) => setSearch(e.target.value),
+						className: "pl-9 text-xs sm:text-sm h-9 bg-bg/50 border-border"
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-wrap items-center gap-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex rounded-lg border border-border bg-bg p-0.5 text-xs font-medium",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => setFilterSide("all"),
+									className: cn("px-2.5 py-1 rounded-md transition-colors", filterSide === "all" ? "bg-surface font-semibold text-fg shadow-sm" : "text-muted hover:text-fg"),
+									children: "Все (35)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => setFilterSide("long"),
+									className: cn("px-2.5 py-1 rounded-md transition-colors flex items-center gap-1", filterSide === "long" ? "bg-surface font-semibold text-up shadow-sm" : "text-muted hover:text-fg"),
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-1.5 rounded-full bg-up" }), "Longs (17)"]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => setFilterSide("short"),
+									className: cn("px-2.5 py-1 rounded-md transition-colors flex items-center gap-1", filterSide === "short" ? "bg-surface font-semibold text-down shadow-sm" : "text-muted hover:text-fg"),
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-1.5 rounded-full bg-down" }), "Shorts (18)"]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", {
+							value: sortMode,
+							onChange: (e) => setSortMode(e.target.value),
+							className: "h-9 rounded-lg border border-border bg-surface px-2.5 text-xs font-medium text-fg focus:outline-none cursor-pointer",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+									value: "pnl_desc",
+									children: "По P&L позиции (сначала плюс)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+									value: "pnl_asc",
+									children: "По P&L позиции (сначала минус)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+									value: "pct_desc",
+									children: "По росту цены акции (%)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+									value: "pct_asc",
+									children: "По спаду цены акции (%)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+									value: "symbol_asc",
+									children: "По тикеру (A → Z)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+									value: "price_desc",
+									children: "По цене ($)"
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex rounded-lg border border-border bg-bg p-0.5 text-xs font-medium",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setViewMode("columns"),
+								className: cn("px-2.5 py-1 rounded-md transition-colors", viewMode === "columns" ? "bg-surface font-semibold text-fg shadow-sm" : "text-muted hover:text-fg"),
+								title: "Две колонки Long / Short",
+								children: "Колонки"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setViewMode("table"),
+								className: cn("px-2.5 py-1 rounded-md transition-colors", viewMode === "table" ? "bg-surface font-semibold text-fg shadow-sm" : "text-muted hover:text-fg"),
+								title: "Табличный вид",
+								children: "Таблица"
+							})]
+						})
+					]
+				})]
+			}),
+			viewMode === "columns" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-1 lg:grid-cols-2 gap-6 items-start",
+				children: [(filterSide === "all" || filterSide === "long") && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-3",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between border-b border-border pb-2 px-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "flex size-6 items-center justify-center rounded-md bg-up text-white text-xs font-bold",
+								children: "L"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+								className: "text-sm font-bold text-fg",
+								children: "LONGS (Длинные позиции)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-[11px] text-muted",
+								children: "17 биотех/технологических лидеров"
+							})] })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: cn("text-xs font-semibold px-2 py-0.5 rounded-full border", basketStats.longAvgPct >= 0 ? "bg-up-soft text-up border-up/30" : "bg-down-soft text-down border-down/30"),
+							children: ["Корзина: ", formatPercent(basketStats.longAvgPct, 2)]
+						})]
+					}), longsFiltered.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "py-12 text-center text-sm text-muted bg-surface rounded-xl border border-dashed border-border",
+						children: [
+							"Позиции Long не найдены по запросу \"",
+							search,
+							"\""
+						]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "space-y-2",
+						children: longsFiltered.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PositionCard, {
+							item,
+							isInWatchlist: watchlistSymbols.includes(item.symbol),
+							onAddWatchlist: () => addWatchlist(item.symbol),
+							onSelectTicker
+						}, item.symbol))
+					})]
+				}), (filterSide === "all" || filterSide === "short") && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-3",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between border-b border-border pb-2 px-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "flex size-6 items-center justify-center rounded-md bg-down text-white text-xs font-bold",
+								children: "S"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+								className: "text-sm font-bold text-fg",
+								children: "SHORTS (Короткие позиции)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-[11px] text-muted",
+								children: "18 переоцененных / спекулятивных бумаг"
+							})] })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: cn("text-xs font-semibold px-2 py-0.5 rounded-full border", basketStats.shortEffectivePnlPct >= 0 ? "bg-up-soft text-up border-up/30" : "bg-down-soft text-down border-down/30"),
+							children: ["P&L шорта: ", formatPercent(basketStats.shortEffectivePnlPct, 2)]
+						})]
+					}), shortsFiltered.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "py-12 text-center text-sm text-muted bg-surface rounded-xl border border-dashed border-border",
+						children: [
+							"Позиции Short не найдены по запросу \"",
+							search,
+							"\""
+						]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "space-y-2",
+						children: shortsFiltered.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PositionCard, {
+							item,
+							isInWatchlist: watchlistSymbols.includes(item.symbol),
+							onAddWatchlist: () => addWatchlist(item.symbol),
+							onSelectTicker
+						}, item.symbol))
+					})]
+				})]
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "overflow-hidden rounded-xl border border-border bg-surface shadow-sm",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "overflow-x-auto",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", {
+						className: "w-full text-left text-xs",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", {
+							className: "border-b border-border bg-bg/60 text-muted font-medium",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "py-2.5 px-3",
+									children: "Тикер"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "py-2.5 px-3",
+									children: "Сторона"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "py-2.5 px-3",
+									children: "Компания / Сектор"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "py-2.5 px-3 text-right",
+									children: "Цена"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "py-2.5 px-3 text-right",
+									children: "Изм. цены (1Д)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "py-2.5 px-3 text-right",
+									children: "P&L позиции"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "py-2.5 px-3 text-center",
+									children: "Тренд (3M)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "py-2.5 px-3 text-right",
+									children: "Действия"
+								})
+							] })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", {
+							className: "divide-y divide-border",
+							children: filteredPositions.map((item) => {
+								const isLong = item.side === "long";
+								const pnlUp = item.effectivePnlPct >= 0;
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", {
+									className: "hover:bg-bg/40 transition-colors group cursor-pointer",
+									onClick: () => onSelectTicker(item.symbol),
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+											className: "py-2.5 px-3 font-mono font-bold text-fg flex items-center gap-2",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: item.symbol })
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+											className: "py-2.5 px-3",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: cn("inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase", isLong ? "bg-up-soft text-up" : "bg-down-soft text-down"),
+												children: item.side
+											})
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
+											className: "py-2.5 px-3",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "font-medium text-fg truncate max-w-[200px]",
+												children: item.companyName
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "text-[10px] text-muted",
+												children: item.category
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+											className: "py-2.5 px-3 text-right font-mono font-semibold text-fg",
+											children: item.price > 0 ? formatPrice(item.price, "$") : "—"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+											className: cn("py-2.5 px-3 text-right font-mono font-medium", item.changePct >= 0 ? "text-up" : "text-down"),
+											children: item.price > 0 ? formatPercent(item.changePct, 2) : "—"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+											className: cn("py-2.5 px-3 text-right font-mono font-bold", pnlUp ? "text-up" : "text-down"),
+											children: item.price > 0 ? formatPercent(item.effectivePnlPct, 2) : "—"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+											className: "py-2.5 px-3 text-center",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "inline-block",
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkline, {
+													values: item.spark,
+													up: item.changePct >= 0,
+													className: "h-5 w-16"
+												})
+											})
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+											className: "py-2.5 px-3 text-right",
+											onClick: (e) => e.stopPropagation(),
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex items-center justify-end gap-1",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+													variant: "ghost",
+													size: "icon",
+													className: "size-7",
+													onClick: () => onSelectTicker(item.symbol),
+													title: "Открыть график",
+													children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "size-3.5 text-muted hover:text-fg" })
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+													variant: "ghost",
+													size: "icon",
+													className: "size-7",
+													onClick: () => addWatchlist(item.symbol),
+													title: "В список наблюдения",
+													children: watchlistSymbols.includes(item.symbol) ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "size-3.5 text-up" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "size-3.5 text-muted hover:text-fg" })
+												})]
+											})
+										})
+									]
+								}, item.symbol);
+							})
+						})]
+					})
+				})
+			})
+		]
+	});
+}
+function PositionCard({ item, isInWatchlist, onAddWatchlist, onSelectTicker }) {
+	const isLong = item.side === "long";
+	const pnlUp = item.effectivePnlPct >= 0;
+	const priceUp = item.changePct >= 0;
+	const rangeSpan = item.dayHigh - item.dayLow;
+	const dayProgressPct = rangeSpan > 0 ? Math.min(100, Math.max(0, (item.price - item.dayLow) / rangeSpan * 100)) : 50;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		onClick: () => onSelectTicker(item.symbol),
+		className: "group relative flex flex-col gap-2 rounded-xl border border-border bg-surface p-3.5 transition-all duration-150 hover:border-border-strong hover:shadow-sm cursor-pointer",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-start justify-between gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: cn("px-1.5 py-0.5 rounded text-[10px] font-bold uppercase", isLong ? "bg-up-soft text-up border border-up/20" : "bg-down-soft text-down border border-down/20"),
+						children: item.side
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-mono text-base font-bold text-fg group-hover:text-accent transition-colors",
+						children: item.symbol
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-[11px] text-muted line-clamp-1 max-w-[190px]",
+						children: item.companyName
+					})] })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "text-right",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "font-mono text-base font-bold text-fg",
+						children: item.price > 0 ? formatPrice(item.price, "$") : "—"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-end gap-1.5 mt-0.5",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: cn("inline-flex items-center text-xs font-semibold tabular-nums", priceUp ? "text-up" : "text-down"),
+							children: [priceUp ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "mr-0.5 size-3 inline" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "mr-0.5 size-3 inline" }), item.price > 0 ? formatPercent(item.changePct, 2) : "—"]
+						}), !isLong && item.price > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: cn("text-[10px] px-1.5 py-0.2 rounded font-bold tabular-nums", pnlUp ? "bg-up-soft text-up" : "bg-down-soft text-down"),
+							title: "Эффективный результат короткой позиции (падение акции = прибыль)",
+							children: ["P&L ", formatPercent(item.effectivePnlPct, 1)]
+						})]
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between gap-3 pt-1 border-t border-border/50 text-[11px] text-muted",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "truncate max-w-[140px] text-muted/80",
+					children: item.category || "Stock"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkline, {
+						values: item.spark,
+						up: priceUp,
+						className: "h-5 w-14"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "button",
+						onClick: (e) => {
+							e.stopPropagation();
+							onAddWatchlist();
+						},
+						className: cn("rounded p-1 text-muted hover:text-fg hover:bg-bg transition-colors", isInWatchlist && "text-up hover:text-up"),
+						title: isInWatchlist ? "Уже в вашем списке" : "Добавить в список наблюдения",
+						children: isInWatchlist ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "size-3.5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "size-3.5" })
+					})]
+				})]
+			}),
+			item.price > 0 && item.dayHigh > item.dayLow && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2 text-[10px] font-mono text-muted/80 pt-0.5",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: item.dayLow.toFixed(2) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "relative flex-1 h-1 bg-border rounded-full overflow-hidden",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: cn("absolute top-0 bottom-0 rounded-full", priceUp ? "bg-up" : "bg-down"),
+							style: { width: `${dayProgressPct}%` }
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: item.dayHigh.toFixed(2) })
+				]
+			})
+		]
+	});
+}
 var Sheet = Dialog$1;
 function SheetContent({ className, children, side = "left", ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPortal$1, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlay$1, { className: "fixed inset-0 z-50 bg-fg/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent$1, {
@@ -4106,6 +5037,11 @@ function MonitorApp({ initialQuotes, initialChart }) {
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileSpreadsheet, { className: "size-4 text-[#0F9D58]" }), "Google Портфель"]
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+											value: "shkreli",
+											className: "gap-1.5 text-xs sm:text-sm font-medium",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Crosshair, { className: "size-4 text-[#E37400]" }), "Радар Шкрели (L/S)"]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
 											value: "google-finance",
 											className: "gap-1.5 text-xs sm:text-sm font-medium",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "size-4 text-accent" }), "Google Finance Hub"]
@@ -4191,6 +5127,11 @@ function MonitorApp({ initialQuotes, initialChart }) {
 									quotes,
 									onSelectTicker: handleSelectTicker
 								})
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+								value: "shkreli",
+								className: "mt-0",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShkreliRadar, { onSelectTicker: handleSelectTicker })
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 								value: "google-finance",

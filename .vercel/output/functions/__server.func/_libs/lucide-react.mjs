@@ -360,6 +360,48 @@ var Copy = createLucideIcon("copy", [["rect", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Crosshair = createLucideIcon("crosshair", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["line", {
+		x1: "22",
+		x2: "18",
+		y1: "12",
+		y2: "12",
+		key: "l9bcsi"
+	}],
+	["line", {
+		x1: "6",
+		x2: "2",
+		y1: "12",
+		y2: "12",
+		key: "13hhkx"
+	}],
+	["line", {
+		x1: "12",
+		x2: "12",
+		y1: "6",
+		y2: "2",
+		key: "10w3f3"
+	}],
+	["line", {
+		x1: "12",
+		x2: "12",
+		y1: "22",
+		y2: "18",
+		key: "15g9kq"
+	}]
+]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var DollarSign = createLucideIcon("dollar-sign", [["line", {
 	x1: "12",
 	x2: "12",
@@ -925,4 +967,4 @@ var X = createLucideIcon("x", [["path", {
 	key: "d8bk6v"
 }]]);
 //#endregion
-export { ChevronDown as A, FileSpreadsheet as C, DollarSign as D, Download as E, CalendarPlus as F, Calculator as I, Building2 as L, ChartColumn as M, ChartLine as N, Copy as O, Calendar as P, ArrowLeftRight as R, GitCompare as S, Ellipsis as T, PanelLeftOpen as _, TrendingDown as a, List as b, Sparkles as c, Scale as d, RotateCcw as f, PanelRightClose as g, PanelRightOpen as h, TrendingUp as i, Check as j, Clock as k, ShieldAlert as l, Plus as m, Upload as n, Trash2 as o, RefreshCw as p, TriangleAlert as r, Star as s, X as t, Search as u, PanelLeftClose as v, ExternalLink as w, Layers as x, LoaderCircle as y, Activity as z };
+export { Clock as A, Activity as B, FileSpreadsheet as C, DollarSign as D, Download as E, Calendar as F, CalendarPlus as I, Calculator as L, Check as M, ChartColumn as N, Crosshair as O, ChartLine as P, Building2 as R, GitCompare as S, Ellipsis as T, PanelLeftOpen as _, TrendingDown as a, List as b, Sparkles as c, Scale as d, RotateCcw as f, PanelRightClose as g, PanelRightOpen as h, TrendingUp as i, ChevronDown as j, Copy as k, ShieldAlert as l, Plus as m, Upload as n, Trash2 as o, RefreshCw as p, TriangleAlert as r, Star as s, X as t, Search as u, PanelLeftClose as v, ExternalLink as w, Layers as x, LoaderCircle as y, ArrowLeftRight as z };

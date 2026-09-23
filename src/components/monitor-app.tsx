@@ -12,6 +12,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   ArrowLeftRight,
+  Crosshair,
 } from "lucide-react";
 import { toast } from "sonner";
 import { PriceChart } from "@/components/price-chart";
@@ -22,6 +23,7 @@ import { WatchlistPanel } from "@/components/watchlist-panel";
 import { PortfolioPanel } from "@/components/portfolio-panel";
 import { GoogleFinanceHub } from "@/components/google-finance-hub";
 import { EarningsCalendar } from "@/components/earnings-calendar";
+import { ShkreliRadar } from "@/components/shkreli-radar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -320,6 +322,11 @@ export function MonitorApp({
                   Google Портфель
                 </TabsTrigger>
 
+                <TabsTrigger value="shkreli" className="gap-1.5 text-xs sm:text-sm font-medium">
+                  <Crosshair className="size-4 text-[#E37400]" />
+                  Радар Шкрели (L/S)
+                </TabsTrigger>
+
                 <TabsTrigger value="google-finance" className="gap-1.5 text-xs sm:text-sm font-medium">
                   <Sparkles className="size-4 text-accent" />
                   Google Finance Hub
@@ -416,6 +423,13 @@ export function MonitorApp({
             <TabsContent value="portfolio" className="mt-0">
               <PortfolioPanel
                 quotes={quotes}
+                onSelectTicker={handleSelectTicker}
+              />
+            </TabsContent>
+
+            {/* TAB: SHKRELI POSITIONS RADAR */}
+            <TabsContent value="shkreli" className="mt-0">
+              <ShkreliRadar
                 onSelectTicker={handleSelectTicker}
               />
             </TabsContent>
