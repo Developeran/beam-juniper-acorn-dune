@@ -6,3 +6,6 @@ node_modules/
 client_secret.json
 client_secret_*.json
 
+
+!/.vercel/output/**/node_modules/
+!/.vercel/output/**/node_modules/**

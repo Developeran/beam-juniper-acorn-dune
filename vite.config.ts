@@ -176,6 +176,9 @@ export default defineConfig(({ command, isPreview }) => ({
             // false, so removing this silently unwires /?install=1 on deploys.
             serverDir: "./server",
             errorHandler: "./src/lib/server-error.ts",
+            externals: {
+              inline: ["tslib"],
+            },
             vercel: {
               functions: {
                 runtime: "nodejs22.x",
