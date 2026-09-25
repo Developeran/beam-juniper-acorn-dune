@@ -472,6 +472,25 @@ var findRoute = /* @__PURE__ */ (() => {
 })();
 var globalMiddleware = [toEventHandler(grokPwaMiddleware)].filter(Boolean);
 //#endregion
+//#region src/lib/server-error.ts
+async function errorHandler$1(error, event) {
+	const status = error.status || error.statusCode || 500;
+	const message = error.message || String(error);
+	const stack = error.stack || null;
+	const url = event?.url?.href || event?.req?.url || null;
+	console.error("[Nitro Server Error]", message, stack);
+	return new Response(JSON.stringify({
+		error: true,
+		status,
+		message,
+		stack: stack ? stack.split("\n") : null,
+		url
+	}, null, 2), {
+		status,
+		headers: { "content-type": "application/json; charset=utf-8" }
+	});
+}
+//#endregion
 //#region node_modules/nitro/dist/runtime/internal/error/prod.mjs
 var errorHandler = (error, event) => {
 	const res = defaultHandler(error, event);
@@ -509,7 +528,7 @@ function defaultHandler(error, event) {
 }
 //#endregion
 //#region #nitro/virtual/error-handler
-var errorHandlers = [errorHandler];
+var errorHandlers = [errorHandler$1, errorHandler];
 async function error_handler_default(error, event) {
 	for (const handler of errorHandlers) try {
 		const response = await handler(error, event, { defaultHandler });
